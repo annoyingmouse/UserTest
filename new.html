@@ -1,162 +1,307 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-	<title>User Test</title>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- Bootstrap -->
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css"
-	/>
-	<!-- DataTable -->
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"
-	/>
-	<style>
-		body {
-			padding-top: 70px;
-		}
-
-		.glyphicon {
-			cursor: pointer;
-		}
-	</style>
+  <title>User Test</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible"
+        content="IE=edge">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css"
+        rel="stylesheet"
+        type="text/css"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/css/jquery.dataTables.min.css"
+        rel="stylesheet"
+        type="text/css"/>
+  <link href="style/main.css"
+        rel="stylesheet"
+        type="text/css"/>
 </head>
-
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">User Test</a>
-			</div>
-		</div>
-	</nav>
-	<div class="container">
-		<div w3-include-html="templates/page_header.html"></div>
-		<table id="YourFamilyDetails" class="table table-bordered table-striped table-condensed"></table>
-		<hr/>
-			<a class="btn btn-primary btn-lg btn-block" id="mail-link" href="./">Go Back</a>
-	</div>
-	<!-- EYES -->
-	<div class="modal fade" id="eyeModal" tabindex="-1" role="dialog" aria-labelledby="eyeModalLabel">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<form id="eyeForm">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title" id="eyeModalLabel">Please tell us about <span class="memberName"></span> eyes</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="eyeExists" id="eyeExists">
-                                    <span class="memberName"></span> has eyes
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label for="eyeColour" class="control-label">What colour are <span class="memberName"></span> eyes?</label>
-                                <select class="form-control" name="eyeColour" id="eyeColour" disabled="disabled">
-                                    <option value="">Please Choose</option>
-                                    <option value="Brown">Brown</option>
-                                    <option value="Hazel">Hazel</option>
-                                    <option value="Blue">Blue</option>
-                                    <option value="Green">Green</option>
-                                    <option value="Silver">Silver</option>
-                                    <option value="Amber">Amber</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="eyeModalDismiss" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <input id="eyeModalPrimary" type="submit" class="btn btn-primary" value="Add Eye Details"/>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand"
+         href="#">
+        User Test
+      </a>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div w3-include-html="templates/page_header.html"></div>
+  <table id="YourFamilyDetails"
+         class="table table-bordered table-striped table-condensed">
+  </table>
+  <hr/>
+  <a class="btn btn-primary btn-lg btn-block"
+     id="mail-link"
+     href="./">Go Back</a>
+</div>
+<!-- EYES -->
+<div class="modal fade"
+     id="eyeModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="eyeModalLabel">
+  <div class="modal-dialog"
+       role="document">
+    <div class="modal-content">
+      <form id="eyeForm">
+        <div class="modal-header">
+          <button type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close">
+            <span aria-hidden="true">
+              &times;
+            </span>
+          </button>
+          <h4 class="modal-title"
+              id="eyeModalLabel">
+            Please tell us about
+            <span class="memberName"></span>
+            eyes
+          </h4>
         </div>
-        <!-- HAIR -->
-        <div class="modal fade" id="hairModal" tabindex="-1" role="dialog" aria-labelledby="hairModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form id="hairForm">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="hairModalLabel">Please tell us about <span class="memberName"></span> hair</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="hairExists" id="hairExists">
-                                    <span class="memberName"></span> has hair
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label for="hairColour" class="control-label">What colour is <span class="memberName"></span> hair?</label>
-                                <select class="form-control" name="hairColour" id="hairColour" disabled="disabled">
-                                    <option value="">Please Choose</option>
-                                    <option value="Black">Black</option>
-                                    <option value="Brown">Brown</option>
-                                    <option value="Blond">Blond</option>
-                                    <option value="Auburn">Auburn</option>
-                                    <option value="Chestnut">Chestnut</option>
-                                    <option value="Red">Red</option>
-                                    <option value="Grey">Grey</option>
-                                    <option value="White">White</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="hairModalDismiss" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <input id="hairModalPrimary" type="submit" class="btn btn-primary" value="Add Hair Details"/>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div class="modal-body">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"
+                     name="eyeExists"
+                     id="eyeExists">
+              <span class="memberName"></span>
+              has eyes
+            </label>
+          </div>
+          <div class="form-group">
+            <label for="eyeColour"
+                   class="control-label">
+              What colour are
+              <span class="memberName"></span>
+              eyes?
+            </label>
+            <select class="form-control"
+                    name="eyeColour"
+                    id="eyeColour"
+                    disabled="disabled">
+              <option value="">
+                Please Choose
+              </option>
+              <option value="Brown">
+                Brown
+              </option>
+              <option value="Hazel">
+                Hazel
+              </option>
+              <option value="Blue">
+                Blue
+              </option>
+              <option value="Green">
+                Green
+              </option>
+              <option value="Silver">
+                Silver
+              </option>
+              <option value="Amber">
+                Amber
+              </option>
+            </select>
+          </div>
         </div>
-        <!-- HANDEDNESS -->
-        <div class="modal fade" id="handModal" tabindex="-1" role="dialog" aria-labelledby="handModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form id="handForm">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="handModalLabel">Please tell us about <span class="memberName"></span> handedness</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="handedness" class="control-label">What handedness is <span class="memberName"></span>?</label>
-                                <select class="form-control" name="handedness" id="handedness">
-                                    <option value="">Please Choose</option>
-                                    <option value="Right-handed">Right-handed</option>
-                                    <option value="Left-handed">Left-handed</option>
-                                    <option value="Mixed-handed">Mixed-handed</option>
-                                    <option value="Ambidextrous">Ambidextrous</option>
-                                    <option value="Ambilevous">Ambilevous</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="handModalDismiss" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <input id="handModalPrimary" type="submit" class="btn btn-primary" value="Add Handedness Details"/>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div class="modal-footer">
+          <button id="eyeModalDismiss"
+                  type="button"
+                  class="btn btn-default"
+                  data-dismiss="modal">
+            Close
+          </button>
+          <input id="eyeModalPrimary"
+                 type="submit"
+                 class="btn btn-primary"
+                 value="Add Eye Details"/>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/dataTables.bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>    
-        <script src="js/w3data.js"></script>
-        <script src="js/new_generic.js"></script>
-        <script src="js/new_eyes.js"></script>
-        <script src="js/new_hair.js"></script>
-        <script src="js/new_hand.js"></script>
-        <script>
-        </script>
-    </body>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- HAIR -->
+<div class="modal fade"
+     id="hairModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="hairModalLabel">
+  <div class="modal-dialog"
+       role="document">
+    <div class="modal-content">
+      <form id="hairForm">
+        <div class="modal-header">
+          <button type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close">
+            <span aria-hidden="true">
+              &times;
+            </span>
+          </button>
+          <h4 class="modal-title"
+              id="hairModalLabel">
+            Please tell us about
+            <span class="memberName"></span>
+            hair
+          </h4>
+        </div>
+        <div class="modal-body">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"
+                     name="hairExists"
+                     id="hairExists">
+              <span class="memberName"></span>
+              has hair
+            </label>
+          </div>
+          <div class="form-group">
+            <label for="hairColour"
+                   class="control-label">
+              What colour is
+              <span class="memberName"></span>
+              hair?
+            </label>
+            <select class="form-control"
+                    name="hairColour"
+                    id="hairColour"
+                    disabled="disabled">
+              <option value="">
+                Please Choose
+              </option>
+              <option value="Black">
+                Black
+              </option>
+              <option value="Brown">
+                Brown
+              </option>
+              <option value="Blond">
+                Blond
+              </option>
+              <option value="Auburn">
+                Auburn
+              </option>
+              <option value="Chestnut">
+                Chestnut
+              </option>
+              <option value="Red">
+                Red
+              </option>
+              <option value="Grey">
+                Grey
+              </option>
+              <option value="White">
+                White
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="hairModalDismiss"
+                  type="button"
+                  class="btn btn-default"
+                  data-dismiss="modal">
+            Close
+          </button>
+          <input id="hairModalPrimary"
+                 type="submit"
+                 class="btn btn-primary"
+                 value="Add Hair Details"/>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- HANDEDNESS -->
+<div class="modal fade"
+     id="handModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="handModalLabel">
+  <div class="modal-dialog"
+       role="document">
+    <div class="modal-content">
+      <form id="handForm">
+        <div class="modal-header">
+          <button type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close">
+            <span aria-hidden="true">
+              &times;
+            </span>
+          </button>
+          <h4 class="modal-title"
+              id="handModalLabel">
+            Please tell us about
+            <span class="memberName"></span>
+            handedness
+          </h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="handedness"
+                   class="control-label">
+              What handedness is
+              <span class="memberName"></span>
+              ?
+            </label>
+            <select class="form-control"
+                    name="handedness"
+                    id="handedness">
+              <option value="">
+                Please Choose
+              </option>
+              <option value="Right-handed">
+                Right-handed
+              </option>
+              <option value="Left-handed">
+                Left-handed
+              </option>
+              <option value="Mixed-handed">
+                Mixed-handed
+              </option>
+              <option value="Ambidextrous">
+                Ambidextrous
+              </option>
+              <option value="Ambilevous">
+                Ambilevous
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="handModalDismiss"
+                  type="button"
+                  class="btn btn-default"
+                  data-dismiss="modal">
+            Close
+          </button>
+          <input id="handModalPrimary"
+                 type="submit"
+                 class="btn btn-primary"
+                 value="Add Handedness Details"/>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>
+<script src="js/w3data.js"></script>
+<script src="js/new_generic.js"></script>
+<script src="js/new_eyes.js"></script>
+<script src="js/new_hair.js"></script>
+<script src="js/new_hand.js"></script>
+</body>
 </html>

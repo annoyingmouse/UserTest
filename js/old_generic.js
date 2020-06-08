@@ -1,4 +1,5 @@
 var data = null;
+w3IncludeHTML();
 $(function () {
   $("form").submit(function (e) {
     e.preventDefault()
@@ -34,6 +35,7 @@ $(function () {
     }));
   });
 });
+
 function GetURLParameter(sParam) {
   var sPageURL = window.location.search.substring(1);
   var sURLVariables = sPageURL.split('&');

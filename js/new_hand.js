@@ -25,13 +25,13 @@ $(function () {
     var familyMember = $("#handModal").data("original");
     $.each(data, function (k, v) {
       if (
-        v.title === familyMember.title
-        &&
-        v.forename === familyMember.forename
-        &&
-        v.surname === familyMember.surname
-        &&
-        v.dob === familyMember.dob
+          v.title === familyMember.title
+          &&
+          v.forename === familyMember.forename
+          &&
+          v.surname === familyMember.surname
+          &&
+          v.dob === familyMember.dob
       ) {
         if (~~$("#handedness").val().length) {
           v.hand = $("#handedness").val();

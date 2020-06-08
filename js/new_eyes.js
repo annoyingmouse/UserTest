@@ -41,13 +41,13 @@ $(function () {
       var familyMember = $("#eyeModal").data("original");
       $.each(data, function (k, v) {
         if (
-          v.title === familyMember.title
-          &&
-          v.forename === familyMember.forename
-          &&
-          v.surname === familyMember.surname
-          &&
-          v.dob === familyMember.dob
+            v.title === familyMember.title
+            &&
+            v.forename === familyMember.forename
+            &&
+            v.surname === familyMember.surname
+            &&
+            v.dob === familyMember.dob
         ) {
           if ($("#eyeExists").prop("checked")) {
             v.eyes = true;

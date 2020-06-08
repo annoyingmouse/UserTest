@@ -30,13 +30,13 @@ $(function () {
       $("#hairColourName").find(":selected").attr("disabled", "disabled");
       $.each(data, function (k, v) {
         if (
-          v.title + "" === familyMember.title + ""
-          &&
-          v.forename + "" === familyMember.forename + ""
-          &&
-          v.surname + "" === familyMember.surname + ""
-          &&
-          v.dob + "" === familyMember.dob + ""
+            v.title + "" === familyMember.title + ""
+            &&
+            v.forename + "" === familyMember.forename + ""
+            &&
+            v.surname + "" === familyMember.surname + ""
+            &&
+            v.dob + "" === familyMember.dob + ""
         ) {
           v.hairs = true;
           v["hair-colour"] = $("#hairColour").val();
@@ -59,13 +59,13 @@ $(function () {
     $("#hairColourName option").each(function (k, v) {
       var optionData = $(v).data();
       if (
-        optionData.title + "" === familyMember.title + ""
-        &&
-        optionData.forename + "" === familyMember.forename + ""
-        &&
-        optionData.surname + "" === familyMember.surname + ""
-        &&
-        optionData.dob + "" === familyMember.dob + ""
+          optionData.title + "" === familyMember.title + ""
+          &&
+          optionData.forename + "" === familyMember.forename + ""
+          &&
+          optionData.surname + "" === familyMember.surname + ""
+          &&
+          optionData.dob + "" === familyMember.dob + ""
       ) {
         $(v).removeAttr("disabled");
       }
@@ -77,13 +77,13 @@ $(function () {
     $("#hairColourName option").each(function (k, v) {
       var optionData = $(v).data();
       if (
-        optionData.title + "" === familyMember.title + ""
-        &&
-        optionData.forename + "" === familyMember.forename + ""
-        &&
-        optionData.surname + "" === familyMember.surname + ""
-        &&
-        optionData.dob + "" === familyMember.dob + ""
+          optionData.title + "" === familyMember.title + ""
+          &&
+          optionData.forename + "" === familyMember.forename + ""
+          &&
+          optionData.surname + "" === familyMember.surname + ""
+          &&
+          optionData.dob + "" === familyMember.dob + ""
       ) {
         $(v).removeAttr("disabled");
         console.log(familyMember);
@@ -106,7 +106,6 @@ $(function () {
       }, {
         "title": "Action",
         "render": function () {
-          var buttons = [];
           var buttons = $("<div></div>", {
             "class": "pull-right btn-group btn-group-sm",
             "role": "group"
