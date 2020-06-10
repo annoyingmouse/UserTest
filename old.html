@@ -1,44 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>User Test</title>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible"
-        content="IE=edge">
   <meta name="viewport"
-        content="width=device-width, initial-scale=1">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css"
-        rel="stylesheet"
-        type="text/css"/>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/css/jquery.dataTables.min.css"
-        rel="stylesheet"
-        type="text/css"/>
-  <link href="style/main.css"
-        rel="stylesheet"
-        type="text/css"/>
+        content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible"
+        content="ie=edge">
+  <title>User test (Multiple tables)</title>
+  <link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.css"
+        rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/css/mdb.css"
+        rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/css/dataTables.bootstrap4.css"
+        rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand"
-         href="#">
-        User Test
-      </a>
-    </div>
-  </div>
-</nav>
+<div w3-include-html="templates/header.html"></div>
 <div class="container">
-  <div w3-include-html="templates/page_header.html"></div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
+  <div class="jumbotron pt-4 pb-4 mb-3">
+    <h1>
+      Thank you
+      <small>
+        for taking part in this test, you're very nearly done.
+      </small>
+    </h1>
+    <p>
+      If you can see a table below with 4 people in it (Doctors 08 08 (08/08/0808), 09 09 (09/09/0909), 10 10 (10/10/1010) and 11 11 (11/11/1111)) then you're ready to go. We'd like you to add some details for the family. You (as Dr 08 08) have brown hair, brown eyes and you're left-handed. The rest of your family has these details:
+    </p>
+    <ul>
+      <li>Dr. 09 09 is really rather odd with silver eyes, white hair and is ambidextrous (I'm not sure I'd trust them
+        <abbr title="To Be Honest">
+          TBH
+        </abbr>
+        ).
+      </li>
+      <li>
+        Dr. 10 10, perhaps due to being ambilevous, had a rather tragic accident and has no eyes or hair as a result.
+      </li>
+      <li>
+        Dr. 11 11 is right-handed and has brown hair and eyes.
+      </li>
+    </ul>
+    <p class="mb-0">
+      If you could provide the details and be mindful about how the process feels to you, perhaps in relation to how the other version felt if you've already entered the data there, then get back to us we'd be really grateful. I'll be sharing this on Facebook so a comment there will suffice but please try entering the data in both ways before commenting.
+    </p>
+    <p>
+      We appreciate that the scenario is contrived but it's just a made up use case, no data you enter is saved to a server, it's all in the browser - though the initial page does make use of local storage so that the details of the family are maintained between sessions.
+    </p>
+  </div>
+  <div class="card mb-3">
+    <div class="card-header">
       About the eyes in your family
     </div>
-    <div class="panel-body">
+    <div class="card-body">
       <table id="eyeTable"
              class="table table-bordered table-striped table-condensed">
       </table>
-      <button class="btn btn-primary btn-lg btn-block"
+      <button class="mt-2 btn btn-primary btn-lg btn-block"
               type="button"
               data-toggle="modal"
               data-target="#eyeModal"
@@ -47,15 +67,15 @@
       </button>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
+  <div class="card mb-3">
+    <div class="card-header">
       About the hair in your family
     </div>
-    <div class="panel-body">
+    <div class="card-body">
       <table id="hairTable"
              class="table table-bordered table-striped table-condensed">
       </table>
-      <button class="btn btn-primary btn-lg btn-block"
+      <button class="mt-2 btn btn-primary btn-lg btn-block"
               type="button"
               data-toggle="modal"
               data-target="#hairModal"
@@ -64,14 +84,15 @@
       </button>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
+  <div class="card mb-3">
+    <div class="card-header">
       About the handedness in your family
     </div>
-    <div class="panel-body">
+    <div class="card-body">
       <table id="handTable"
-             class="table table-bordered table-striped table-condensed"></table>
-      <button class="btn btn-primary btn-lg btn-block"
+             class="table table-bordered table-striped table-condensed">
+      </table>
+      <button class="mt-2 btn btn-primary btn-lg btn-block"
               type="button"
               data-toggle="modal"
               data-target="#handModal"
@@ -80,12 +101,18 @@
       </button>
     </div>
   </div>
-  <hr/>
-  <a class="btn btn-primary btn-lg btn-block"
-     id="mail-link"
-     href="./">
-    Go Back
-  </a>
+  <div class="card mb-3">
+    <div class="card-header">
+      Once you're done, please go back and try the other way of entering the same information.
+    </div>
+    <div class="card-body">
+      <a class="btn btn-primary btn-lg btn-block"
+         id="back-link"
+         href="./">
+        Go Back
+      </a>
+    </div>
+  </div>
 </div>
 <!-- EYES -->
 <div class="modal fade"
@@ -96,43 +123,44 @@
   <div class="modal-dialog"
        role="document">
     <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title"
+            id="eyeModalLabel">
+          Please tell us about
+          <span class="memberName"></span>
+          eyes
+        </h4>
+        <button type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close">
+          <span aria-hidden="true">
+            &times;
+          </span>
+        </button>
+      </div>
       <form id="eyeForm">
-        <div class="modal-header">
-          <button type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close">
-            <span aria-hidden="true">
-              &times;
-            </span>
-          </button>
-          <h4 class="modal-title"
-              id="eyeModalLabel">
-            Please tell us about
-            <span class="memberName"></span>
-            eyes
-          </h4>
-        </div>
         <div class="modal-body">
           <div class="form-group">
-            <label for="eyeColourName"
-                   class="control-label">
+            <label for="eyeColourName">
               Please choose a family member
             </label>
-            <select class="form-control"
+            <select id="eyeColourName"
                     name="eyeColourName"
-                    id="eyeColourName">
-              <option value="">
-                Please Choose
+                    class="browser-default custom-select"
+                    required>
+              <option value=""
+                      disabled
+                      selected>
+                Please choose
               </option>
             </select>
           </div>
           <div class="form-group">
-            <label for="eyeColour"
-                   class="control-label">
+            <label for="eyeColour">
               What colour are their eyes?
             </label>
-            <select class="form-control"
+            <select class="browser-default custom-select"
                     name="eyeColour"
                     id="eyeColour"
                     disabled="disabled">
@@ -185,43 +213,44 @@
   <div class="modal-dialog"
        role="document">
     <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title"
+            id="familyModalLabel">
+          Please tell us about
+          <span class="memberName"></span>
+          hair
+        </h4>
+        <button type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close">
+          <span aria-hidden="true">
+            &times;
+          </span>
+        </button>
+      </div>
       <form id="hairForm">
-        <div class="modal-header">
-          <button type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close">
-            <span aria-hidden="true">
-              &times;
-            </span>
-          </button>
-          <h4 class="modal-title"
-              id="hairModalLabel">
-            Please tell us about
-            <span class="memberName"></span>
-            hair
-          </h4>
-        </div>
         <div class="modal-body">
           <div class="form-group">
-            <label for="hairColourName"
-                   class="control-label">
+            <label for="hairColourName">
               Please choose a family member
             </label>
-            <select class="form-control"
+            <select id="hairColourName"
                     name="hairColourName"
-                    id="hairColourName">
-              <option value="">
-                Please Choose
+                    class="browser-default custom-select"
+                    required>
+              <option value=""
+                      disabled
+                      selected>
+                Please choose
               </option>
             </select>
           </div>
           <div class="form-group">
-            <label for="hairColour"
-                   class="control-label">
-              What colour is their hair?
+            <label for="hairColour">
+              What colour are their eyes?
             </label>
-            <select class="form-control"
+            <select class="browser-default custom-select"
                     name="hairColour"
                     id="hairColour"
                     disabled="disabled">
@@ -280,43 +309,45 @@
   <div class="modal-dialog"
        role="document">
     <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title"
+            id="handModalLabel">
+          Please tell us about their handedness
+        </h4>
+        <button type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close">
+          <span aria-hidden="true">
+            &times;
+          </span>
+        </button>
+      </div>
       <form id="handForm">
-        <div class="modal-header">
-          <button type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close">
-            <span aria-hidden="true">
-              &times;
-            </span>
-          </button>
-          <h4 class="modal-title"
-              id="handModalLabel">
-            Please tell us about their handedness
-          </h4>
-        </div>
         <div class="modal-body">
           <div class="form-group">
-            <label for="handednessName"
-                   class="control-label">
+            <label for="handednessName">
               Please choose a family member
             </label>
-            <select class="form-control"
+            <select id="handednessName"
                     name="handednessName"
-                    id="handednessName">
-              <option value="">
-                Please Choose
+                    class="browser-default custom-select"
+                    required>
+              <option value=""
+                      disabled
+                      selected>
+                Please choose
               </option>
             </select>
           </div>
           <div class="form-group">
-            <label for="handedness"
-                   class="control-label">
-              What is their hair handedness?
+            <label for="handedness">
+              What colour are their eyes?
             </label>
-            <select class="form-control"
+            <select class="browser-default custom-select"
                     name="handedness"
-                    id="handedness">
+                    id="handedness"
+                    disabled="disabled">
               <option value="">
                 Please Choose
               </option>
@@ -354,16 +385,25 @@
     </div>
   </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/jquery.dataTables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/dataTables.bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>
-<script src="js/w3data.js"></script>
-<script src="js/old_generic.js"></script>
-<script src="js/old_eyes.js"></script>
-<script src="js/old_hair.js"></script>
-<script src="js/old_hand.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/js/mdb.min.js"></script>
+<script type="text/javascript"
+        src="js/includeHTML.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment-with-locales.min.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/jquery.dataTables.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/dataTables.bootstrap4.js"></script>
+<script type="text/javascript"
+        src="js/shared.js"></script>
+<script type="text/javascript"
+        src="js/old.js"></script>
 </body>
 </html>
