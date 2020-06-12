@@ -2,7 +2,25 @@ $(function () {
   $("form").submit(function (e) {
     e.preventDefault()
   });
-  data = JSON.parse(window.atob(GetURLParameter("data")));
+  let Family = JSON.parse(localStorage.getItem('FamilyMembers'))
+  Family.push(JSON.parse(localStorage.getItem('Member')))
+  const updateAll = () => {
+    localStorage.setItem('Member', JSON.stringify(...Family.filter(m => m.type === "Member")))
+    localStorage.setItem('FamilyMembers', JSON.stringify(Family.filter(m => m.type === "FamilyMember")))
+
+    Family = JSON.parse(localStorage.getItem('FamilyMembers'))
+    Family.push(JSON.parse(localStorage.getItem('Member')))
+
+    eyeTable.clear()
+    eyeTable.rows.add(Family.filter(m => m.old.eye))
+    eyeTable.draw()
+    hairTable.clear()
+    hairTable.rows.add(Family.filter(m => m.old.hair))
+    hairTable.draw()
+    handTable.clear()
+    handTable.rows.add(Family.filter(m => m.old.hand))
+    handTable.draw()
+  }
   /*
   8888888888
   888
@@ -16,143 +34,129 @@ $(function () {
             Y8b d88P
              "Y88P"
    */
-  $.each(data, function (k, v) {
-    $("#eyeColourName").append($("<option></option>", {
-      "text": v.name + " (" + moment(v.dob).format("DD/MM/YYYY") + ")",
-      "value": v.name,
-      "data-title": v.title,
-      "data-forename": v.forename,
-      "data-surname": v.surname,
-      "data-dob": v.dob,
-      "data-type": v.type
-    }));
+
+  const eyeColourName = $("#eyeColourName")
+  const eyeColour = $("#eyeColour")
+  const eyeModal = $("#eyeModal")
+  const eyeModalPrimary = $("#eyeModalPrimary")
+
+  const resetEyeNameSelect = () => {
+    eyeColourName
+        .find('option')
+        .remove()
+        .end()
+        .append(`<option value="" disabled selected>Please choose</option>`);
+    $.each(Family, function (k, v) {
+      const option = $(`<option value="${v.id}">${v.name}</option>`)
+      if(v.old.eye){
+        option.prop("disabled", true)
+      }
+      eyeColourName.append(option);
+    })
+    eyeColour.val(null)
+    eyeColour.prop("disabled", true);
+  }
+  resetEyeNameSelect()
+
+  eyeColourName.on("change", function () {
+    eyeColour.prop("disabled", !$(this).val());
   });
-  $("#eyeColourName").on("change", function () {
-    if ($(this).val().length) {
-      $("#eyeColour").removeAttr("disabled");
-    } else {
-      $("#eyeColour").attr("disabled", "disabled");
-    }
-  });
-  var eyeForm = $("#eyeForm").validate({
-    "rules": {
-      "eyeColourName": {
-        "required": true
+
+  $("#eyeForm").validate({
+    rules: {
+      eyeColourName: {
+        required: true
       },
-      "eyeColour": {
-        "required": true
+      eyeColour: {
+        required: true
       }
     },
-    "submitHandler": function (form) {
-      var familyMember = $("#eyeColourName").find(":selected").data();
-      $("#eyeColourName").find(":selected").attr("disabled", "disabled");
-      $.each(data, function (k, v) {
-        if (
-            v.title + "" === familyMember.title + ""
-            &&
-            v.forename + "" === familyMember.forename + ""
-            &&
-            v.surname + "" === familyMember.surname + ""
-            &&
-            v.dob + "" === familyMember.dob + ""
-        ) {
-          v.eyes = true;
-          v["eye-colour"] = $("#eyeColour").val();
-          eyeTable.row.add(v).draw();
+    submitHandler: function () {
+      Family.forEach(m => {
+        if(m.id === eyeColourName.val()){
+          m.old.eye = eyeColour.val()
         }
-      });
-      $("#eyeModal").modal("hide");
-      $("#eyeModalPrimary").val("Add Eye Details");
+      })
+      eyeModal.modal("hide");
+      eyeModalPrimary.val("Add Eye Details");
+      updateAll()
     }
   });
-  $("#eyeModal").on("hidden.bs.modal", function () {
-    eyeForm.resetForm();
-    document.getElementById("eyeForm").reset();
-    $("#eyeModal").data("original", "");
-    $("#eyeColourName").val("");
-    $("#eyeColour").val("").attr("disabled", "disabled");
+  eyeModal.on("hidden.bs.modal", function () {
+    resetEyeNameSelect()
+    eyeColour.val(null)
+    eyeModal.removeData("original");
   });
-  $("#eyeTable").on("click", ".btn-danger", function () {
-    var familyMember = eyeTable.row($(this).parents('tr')).data();
-    $("#eyeColourName option").each(function (k, v) {
-      var optionData = $(v).data();
-      if (
-          optionData.title + "" === familyMember.title + ""
-          &&
-          optionData.forename + "" === familyMember.forename + ""
-          &&
-          optionData.surname + "" === familyMember.surname + ""
-          &&
-          optionData.dob + "" === familyMember.dob + ""
-      ) {
-        $(v).removeAttr("disabled");
+  const eyeTable = $("#eyeTable").on("click", ".btn-danger", function () {
+    Family.forEach(m => {
+      if(m.id === eyeTable.row($(this).parents('tr')).data().id){
+        m.old.eye = null
       }
-    });
-    eyeTable.row($(this).parents('tr')).remove().draw();
-  });
-  $("#eyeTable").on("click", ".btn-primary", function () {
-    var familyMember = eyeTable.row($(this).parents('tr')).data();
-    $("#eyeColourName option").each(function (k, v) {
-      var optionData = $(v).data();
-      if (
-          optionData.title + "" === familyMember.title + ""
-          &&
-          optionData.forename + "" === familyMember.forename + ""
-          &&
-          optionData.surname + "" === familyMember.surname + ""
-          &&
-          optionData.dob + "" === familyMember.dob + ""
-      ) {
-        $(v).removeAttr("disabled");
-        $("#eyeModal").modal("show").data("original", familyMember);
-        $("#eyeColourName").val(familyMember.name);
-        $("#eyeColour").removeAttr("disabled").val(familyMember["eye-colour"]);
-        $("#eyeModalPrimary").val("Update Eye Details");
+    })
+    updateAll()
+    resetEyeNameSelect()
+  }).on("click", ".btn-primary", function () {
+    const familyMember = eyeTable.row($(this).parents('tr')).data();
+    const clone = JSON.parse(JSON.stringify(familyMember))
+    eyeColourName.find("option").each(function(_, opt){
+        if($(opt).val() === familyMember.id){
+          $(opt).prop("disabled", false)
+        }else{
+          $(opt).prop("disabled", true)
+        }
+      })
+    eyeColourName.val(familyMember.id)
+    eyeColour.val(familyMember.old.eye).prop( "disabled", false);
+    eyeModalPrimary.val("Update Eye Details");
+    eyeModal.modal("show").data("original", clone);
+    Family.forEach(m => {
+      if(m.id === familyMember.id){
+        m.old.eye = null
       }
-    });
-    eyeTable.row($(this).parents('tr')).remove().draw();
-  });
-  var eyeTable = $("#eyeTable").DataTable({
-    "columns": [
+    })
+    updateAll()
+  }).DataTable({
+    columns: [
       {
-        "data": "name",
-        "title": "Name"
+        data: "name",
+        title: "Name"
       }, {
-        "data": "eye-colour",
-        "title": "Eye Colour"
+        data: "old.eye",
+        title: "Eye Colour"
       }, {
-        "title": "Action",
-        "render": function () {
-          var buttons = $("<div></div>", {
-            "class": "pull-right btn-group btn-group-sm",
-            "role": "group"
-          });
-          buttons.append($("<button></button>", {
-            "type": "button",
-            "class": "btn btn-danger",
-            "text": " Remove"
-          }).prepend($("<i></i>", {
-            "class": "glyphicon glyphicon-remove",
-            "title": "Remove"
-          })));
-          buttons.append($("<button></button>", {
-            "type": "button",
-            "class": "btn btn-primary",
-            "text": " Edit"
-          }).prepend($("<i></i>", {
-            "class": "glyphicon glyphicon-edit",
-            "title": "Edit"
-          })));
-          return buttons.prop("outerHTML");
-        },
-        "width": "15%",
+        title: "Action",
+        render: () => `
+          <div class="pull-right btn-group btn-group-sm"
+               role="group">
+              <button type="button"
+                      class="btn btn-danger">
+                  <i class="fa fa-times"
+                     title="Remove"></i>
+                  Remove
+              </button>
+              <button type="button"
+                      class="btn btn-primary">
+                  <i class="fa fa-edit"
+                     title="Edit"></i>
+                  Edit
+              </button>
+          </div>
+        `,
+        "width": "20%",
         "sortable": false
       }
     ],
+    data: Family.filter(m => m.old.eye)
   });
   $("#eyeModalDismiss").on("click", function () {
-    if ($("#eyeModalPrimary").val() === "Update Eye Details") {
-      eyeTable.row.add($("#eyeModal").data("original")).draw();
+    if (eyeModal.data("original")) {
+      const familyMember = eyeModal.data("original")
+      Family.forEach(m => {
+        if(m.id === familyMember.id){
+          m.old.eye = familyMember.old.eye
+        }
+      })
+      updateAll()
     }
   });
   /*
@@ -165,146 +169,131 @@ $(function () {
   888    888 888  888 888 888
   888    888 "Y888888 888 888
    */
-  $.each(data, function (k, v) {
-    $("#hairColourName").append($("<option></option>", {
-      "text": v.name + " (" + moment(v.dob).format("DD/MM/YYYY") + ")",
-      "value": v.name,
-      "data-title": v.title,
-      "data-forename": v.forename,
-      "data-surname": v.surname,
-      "data-dob": v.dob,
-      "data-type": v.type
-    }));
+  const hairColourName = $("#hairColourName")
+  const hairColour = $("#hairColour")
+  const hairModal = $("#hairModal")
+  const hairModalPrimary = $("#hairModalPrimary")
+
+  const resetHairNameSelect = () => {
+    hairColourName
+        .find('option')
+        .remove()
+        .end()
+        .append(`<option value="" disabled selected>Please choose</option>`);
+    $.each(Family, function (k, v) {
+      const option = $(`<option value="${v.id}">${v.name}</option>`)
+      if(v.old.hair){
+        option.prop("disabled", true)
+      }
+      hairColourName.append(option);
+    })
+    hairColour.val(null)
+    hairColour.prop("disabled", true);
+  }
+  resetHairNameSelect()
+
+  hairColourName.on("change", function () {
+    hairColour.prop("disabled", !$(this).val());
   });
-  $("#hairColourName").on("change", function () {
-    if ($(this).val().length) {
-      $("#hairColour").removeAttr("disabled");
-    } else {
-      $("#hairColour").attr("disabled", "disabled");
-    }
-  });
-  var hairForm = $("#hairForm").validate({
-    "rules": {
-      "hairColourName": {
-        "required": true
+
+  $("#hairForm").validate({
+    rules: {
+      hairColourName: {
+        required: true
       },
-      "hairColour": {
-        "required": true
+      hairColour: {
+        required: true
       }
     },
-    "submitHandler": function (form) {
-      var familyMember = $("#hairColourName").find(":selected").data();
-      $("#hairColourName").find(":selected").attr("disabled", "disabled");
-      $.each(data, function (k, v) {
-        if (
-            v.title + "" === familyMember.title + ""
-            &&
-            v.forename + "" === familyMember.forename + ""
-            &&
-            v.surname + "" === familyMember.surname + ""
-            &&
-            v.dob + "" === familyMember.dob + ""
-        ) {
-          v.hairs = true;
-          v["hair-colour"] = $("#hairColour").val();
-          hairTable.row.add(v).draw();
+    submitHandler: function () {
+      Family.forEach(m => {
+        if(m.id === hairColourName.val()){
+          m.old.hair = hairColour.val()
         }
-      });
-      $("#hairModal").modal("hide");
-      $("#hairModalPrimary").val("Add Hair Details");
+      })
+      hairModal.modal("hide");
+      hairModalPrimary.val("Add Hair Details");
+      updateAll()
     }
   });
-  $("#hairModal").on("hidden.bs.modal", function () {
-    hairForm.resetForm();
-    document.getElementById("hairForm").reset();
-    $("#hairModal").data("original", "");
-    $("#hairColourName").val("");
-    $("#hairColour").val("").attr("disabled", "disabled");
+  hairModal.on("hidden.bs.modal", function () {
+    resetHairNameSelect()
+    hairColour.val(null)
+    hairModal.removeData("original");
   });
-  $("#hairTable").on("click", ".btn-danger", function () {
-    var familyMember = hairTable.row($(this).parents('tr')).data();
-    $("#hairColourName option").each(function (k, v) {
-      var optionData = $(v).data();
-      if (
-          optionData.title + "" === familyMember.title + ""
-          &&
-          optionData.forename + "" === familyMember.forename + ""
-          &&
-          optionData.surname + "" === familyMember.surname + ""
-          &&
-          optionData.dob + "" === familyMember.dob + ""
-      ) {
-        $(v).removeAttr("disabled");
+  const hairTable = $("#hairTable").on("click", ".btn-danger", function () {
+    Family.forEach(m => {
+      if(m.id === hairTable.row($(this).parents('tr')).data().id){
+        m.old.hair = null
       }
-    });
-    hairTable.row($(this).parents('tr')).remove().draw();
-  });
-  $("#hairTable").on("click", ".btn-primary", function () {
-    var familyMember = hairTable.row($(this).parents('tr')).data();
-    $("#hairColourName option").each(function (k, v) {
-      var optionData = $(v).data();
-      if (
-          optionData.title + "" === familyMember.title + ""
-          &&
-          optionData.forename + "" === familyMember.forename + ""
-          &&
-          optionData.surname + "" === familyMember.surname + ""
-          &&
-          optionData.dob + "" === familyMember.dob + ""
-      ) {
-        $(v).removeAttr("disabled");
-        $("#hairModal").modal("show").data("original", familyMember);
-        $("#hairColourName").val(familyMember.name);
-        $("#hairColour").removeAttr("disabled").val(familyMember["hair-colour"]);
-        $("#hairModalPrimary").val("Update Hair Details");
+    })
+    updateAll()
+    resetHairNameSelect()
+  }).on("click", ".btn-primary", function () {
+    const familyMember = hairTable.row($(this).parents('tr')).data();
+    const clone = JSON.parse(JSON.stringify(familyMember))
+    hairColourName.find("option").each(function(_, opt){
+      if($(opt).val() === familyMember.id){
+        $(opt).prop("disabled", false)
+      }else{
+        $(opt).prop("disabled", true)
       }
-    });
-    hairTable.row($(this).parents('tr')).remove().draw();
-  });
-  var hairTable = $("#hairTable").DataTable({
-    "columns": [
+    })
+    hairColourName.val(familyMember.id)
+    hairColour.val(familyMember.old.hair).prop( "disabled", false);
+    hairModalPrimary.val("Update Hair Details");
+    hairModal.modal("show").data("original", clone);
+    Family.forEach(m => {
+      if(m.id === familyMember.id){
+        m.old.hair = null
+      }
+    })
+    updateAll()
+  }).DataTable({
+    columns: [
       {
-        "data": "name",
-        "title": "Name"
+        data: "name",
+        title: "Name"
       }, {
-        "data": "hair-colour",
-        "title": "Hair Colour"
+        data: "old.hair",
+        title: "Hair Colour"
       }, {
-        "title": "Action",
-        "render": function () {
-          var buttons = [];
-          var buttons = $("<div></div>", {
-            "class": "pull-right btn-group btn-group-sm",
-            "role": "group"
-          });
-          buttons.append($("<button></button>", {
-            "type": "button",
-            "class": "btn btn-danger",
-            "text": " Remove"
-          }).prepend($("<i></i>", {
-            "class": "glyphicon glyphicon-remove",
-            "title": "Remove"
-          })));
-          buttons.append($("<button></button>", {
-            "type": "button",
-            "class": "btn btn-primary",
-            "text": " Edit"
-          }).prepend($("<i></i>", {
-            "class": "glyphicon glyphicon-edit",
-            "title": "Edit"
-          })));
-          return buttons.prop("outerHTML");
-        },
-        "width": "15%",
+        title: "Action",
+        render: () => `
+          <div class="pull-right btn-group btn-group-sm"
+               role="group">
+              <button type="button"
+                      class="btn btn-danger">
+                  <i class="fa fa-times"
+                     title="Remove"></i>
+                  Remove
+              </button>
+              <button type="button"
+                      class="btn btn-primary">
+                  <i class="fa fa-edit"
+                     title="Edit"></i>
+                  Edit
+              </button>
+          </div>
+        `,
+        "width": "20%",
         "sortable": false
       }
     ],
+    data: Family.filter(m => m.old.hair)
   });
   $("#hairModalDismiss").on("click", function () {
-    if ($("#hairModalPrimary").val() === "Update Hair Details") {
-      hairTable.row.add($("#hairModal").data("original")).draw();
+    if (hairModal.data("original")) {
+      const familyMember = hairModal.data("original")
+      Family.forEach(m => {
+        if(m.id === familyMember.id){
+          m.old.hair = familyMember.old.hair
+        }
+      })
+      updateAll()
     }
   });
+
   /*
   888    888                        888
   888    888                        888
@@ -315,142 +304,128 @@ $(function () {
   888    888 888  888 888  888 Y88b 888
   888    888 "Y888888 888  888  "Y88888
   */
-  $.each(data, function (k, v) {
-    $("#handednessName").append($("<option></option>", {
-      "text": v.name + " (" + moment(v.dob).format("DD/MM/YYYY") + ")",
-      "value": v.name,
-      "data-title": v.title,
-      "data-forename": v.forename,
-      "data-surname": v.surname,
-      "data-dob": v.dob,
-      "data-type": v.type
-    }));
+  const handednessName = $("#handednessName")
+  const handedness = $("#handedness")
+  const handModal = $("#handModal")
+  const handModalPrimary = $("#handModalPrimary")
+
+  const resetHandNameSelect = () => {
+    handednessName
+        .find('option')
+        .remove()
+        .end()
+        .append(`<option value="" disabled selected>Please choose</option>`);
+    $.each(Family, function (k, v) {
+      const option = $(`<option value="${v.id}">${v.name}</option>`)
+      if(v.old.hand){
+        option.prop("disabled", true)
+      }
+      handednessName.append(option);
+    })
+    handedness.val(null)
+    handedness.prop("disabled", true);
+  }
+  resetHandNameSelect()
+
+  handednessName.on("change", function () {
+    handedness.prop("disabled", !$(this).val());
   });
-  $("#handednessName").on("change", function () {
-    if ($(this).val().length) {
-      $("#handedness").removeAttr("disabled");
-    } else {
-      $("#handedness").attr("disabled", "disabled");
-    }
-  });
-  var handForm = $("#handForm").validate({
-    "rules": {
-      "eyeColourName": {
-        "required": true
+
+  $("#handForm").validate({
+    rules: {
+      handednessName: {
+        required: true
       },
-      "eyeColour": {
-        "required": true
+      handedness: {
+        required: true
       }
     },
-    "submitHandler": function (form) {
-      var familyMember = $("#handednessName").find(":selected").data();
-      $("#handednessName").find(":selected").attr("disabled", "disabled");
-      $.each(data, function (k, v) {
-        if (
-            v.title + "" === familyMember.title + ""
-            &&
-            v.forename + "" === familyMember.forename + ""
-            &&
-            v.surname + "" === familyMember.surname + ""
-            &&
-            v.dob + "" === familyMember.dob + ""
-        ) {
-          v["handedness"] = $("#handedness").val();
-          handTable.row.add(v).draw();
+    submitHandler: function () {
+      Family.forEach(m => {
+        if(m.id === handednessName.val()){
+          m.old.hand = handedness.val()
         }
-      });
-      $("#handModal").modal("hide");
-      $("#handModalPrimary").val("Add Handedness Details");
+      })
+      handModal.modal("hide");
+      handModalPrimary.val("Add Hand Details");
+      updateAll()
     }
   });
-  $("#handModal").on("hidden.bs.modal", function () {
-    handForm.resetForm();
-    document.getElementById("handForm").reset();
-    $("#handModal").data("original", "");
-    $("#handednessName").val("");
-    $("#handedness").val("").attr("disabled", "disabled");
+  handModal.on("hidden.bs.modal", function () {
+    resetHandNameSelect()
+    handedness.val(null)
+    handModal.removeData("original");
   });
-  $("#handTable").on("click", ".btn-danger", function () {
-    var familyMember = handTable.row($(this).parents('tr')).data();
-    $("#handednessName option").each(function (k, v) {
-      var optionData = $(v).data();
-      if (
-          optionData.title + "" === familyMember.title + ""
-          &&
-          optionData.forename + "" === familyMember.forename + ""
-          &&
-          optionData.surname + "" === familyMember.surname + ""
-          &&
-          optionData.dob + "" === familyMember.dob + ""
-      ) {
-        $(v).removeAttr("disabled");
+  const handTable = $("#handTable").on("click", ".btn-danger", function () {
+    Family.forEach(m => {
+      if(m.id === handTable.row($(this).parents('tr')).data().id){
+        m.old.hand = null
       }
-    });
-    handTable.row($(this).parents('tr')).remove().draw();
-  });
-  $("#handTable").on("click", ".btn-primary", function () {
-    var familyMember = handTable.row($(this).parents('tr')).data();
-    $("#handednessName option").each(function (k, v) {
-      var optionData = $(v).data();
-      if (
-          optionData.title + "" === familyMember.title + ""
-          &&
-          optionData.forename + "" === familyMember.forename + ""
-          &&
-          optionData.surname + "" === familyMember.surname + ""
-          &&
-          optionData.dob + "" === familyMember.dob + ""
-      ) {
-        $(v).removeAttr("disabled");
-        $("#handModal").modal("show").data("original", familyMember);
-        $("#handednessName").val(familyMember.name);
-        $("#handedness").removeAttr("disabled").val(familyMember["handedness"]);
-        $("#handModalPrimary").val("Update Handedness Details");
+    })
+    updateAll()
+    resetHandNameSelect()
+  }).on("click", ".btn-primary", function () {
+    const familyMember = handTable.row($(this).parents('tr')).data();
+    const clone = JSON.parse(JSON.stringify(familyMember))
+    handednessName.find("option").each(function(_, opt){
+      if($(opt).val() === familyMember.id){
+        $(opt).prop("disabled", false)
+      }else{
+        $(opt).prop("disabled", true)
       }
-    });
-    handTable.row($(this).parents('tr')).remove().draw();
-  });
-  var handTable = $("#handTable").DataTable({
-    "columns": [
+    })
+    handednessName.val(familyMember.id)
+    handedness.val(familyMember.old.hand).prop( "disabled", false);
+    handModalPrimary.val("Update Hand Details");
+    handModal.modal("show").data("original", clone);
+    Family.forEach(m => {
+      if(m.id === familyMember.id){
+        m.old.hand = null
+      }
+    })
+    updateAll()
+  }).DataTable({
+    columns: [
       {
-        "data": "name",
-        "title": "Name"
+        data: "name",
+        title: "Name"
       }, {
-        "data": "handedness",
-        "title": "Handedness"
+        data: "old.hand",
+        title: "Hand Colour"
       }, {
-        "title": "Action",
-        "render": function () {
-          var buttons = $("<div></div>", {
-            "class": "pull-right btn-group btn-group-sm",
-            "role": "group"
-          });
-          buttons.append($("<button></button>", {
-            "type": "button",
-            "class": "btn btn-danger",
-            "text": " Remove"
-          }).prepend($("<i></i>", {
-            "class": "glyphicon glyphicon-remove",
-            "title": "Remove"
-          })));
-          buttons.append($("<button></button>", {
-            "type": "button",
-            "class": "btn btn-primary",
-            "text": " Edit"
-          }).prepend($("<i></i>", {
-            "class": "glyphicon glyphicon-edit",
-            "title": "Edit"
-          })));
-          return buttons.prop("outerHTML");
-        },
-        "width": "15%",
+        title: "Action",
+        render: () => `
+          <div class="pull-right btn-group btn-group-sm"
+               role="group">
+              <button type="button"
+                      class="btn btn-danger">
+                  <i class="fa fa-times"
+                     title="Remove"></i>
+                  Remove
+              </button>
+              <button type="button"
+                      class="btn btn-primary">
+                  <i class="fa fa-edit"
+                     title="Edit"></i>
+                  Edit
+              </button>
+          </div>
+        `,
+        "width": "20%",
         "sortable": false
       }
     ],
+    data: Family.filter(m => m.old.hand)
   });
   $("#handModalDismiss").on("click", function () {
-    if ($("#handModalPrimary").val() === "Update Handedness Details") {
-      handTable.row.add($("#handModal").data("original")).draw();
+    if (handModal.data("original")) {
+      const familyMember = handModal.data("original")
+      Family.forEach(m => {
+        if(m.id === familyMember.id){
+          m.old.hand = familyMember.old.hand
+        }
+      })
+      updateAll()
     }
   });
 });
