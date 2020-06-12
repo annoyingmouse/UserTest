@@ -9,47 +9,35 @@ $(function () {
   const familySurname = $("#familySurname");
   const familyDOB = $("#familyDOB");
   const familyModal = $("#familyModal");
-  if (localStorage.Member) {
-    yourTitle.val(JSON.parse(localStorage.Member).title);
-    yourForename.val(JSON.parse(localStorage.Member).forename);
-    yourSurname.val(JSON.parse(localStorage.Member).surname);
-    yourDOB.val(JSON.parse(localStorage.Member).dob);
-  }
-  yourTitle.change(e => {
-    const Member = localStorage.getItem('Member')
-        ? JSON.parse(localStorage.getItem('Member'))
-        : {};
+  
+  const Member = localStorage.Member 
+    ? JSON.parse(localStorage.Member) 
+    : {}
+  const FamilyMembers = localStorage.getItem('FamilyMembers')
+    ? JSON.parse(localStorage.getItem('FamilyMembers'))
+    : []
+
+  yourTitle.val(Member.title || null).change(e => {
     Member["title"] = e.target.value;
     localStorage.setItem('Member', JSON.stringify(Member));
-  });
-  yourForename.change(e => {
-    const Member = localStorage.getItem('Member')
-        ? JSON.parse(localStorage.getItem('Member'))
-        : {};
+  })
+  yourForename.val(Member.forename || null).change(e => {
     Member["forename"] = e.target.value;
     localStorage.setItem('Member', JSON.stringify(Member));
-  });
-  yourSurname.change(e => {
-    const Member = localStorage.getItem('Member')
-        ? JSON.parse(localStorage.getItem('Member'))
-        : {};
+  })
+  yourSurname.val(Member.surname || null).change(e => {
     Member["surname"] = e.target.value;
     localStorage.setItem('Member', JSON.stringify(Member));
-  });
-  yourDOB.change(e => {
-    const Member = localStorage.getItem('Member')
-        ? JSON.parse(localStorage.getItem('Member'))
-        : {};
+  })
+  yourDOB.val(Member.dob || null).change(e => {
     Member["dob"] = e.target.value;
     localStorage.setItem('Member', JSON.stringify(Member));
-  });
+  })
+
   $("#familyForm").submit(function (e) {
     e.preventDefault();
   }).validate({
     submitHandler: function (form) {
-      const FamilyMembers = localStorage.getItem('FamilyMembers')
-          ? JSON.parse(localStorage.getItem('FamilyMembers'))
-          : [];
       FamilyMembers.push({
         title: yourTitle.val(),
         forename: yourForename.val(),
@@ -58,19 +46,40 @@ $(function () {
         dob: yourDOB.val(),
         type: "Member"
       });
-      const encodedData = window.btoa(JSON.stringify(FamilyMembers));
-      const href = window.location.href.split("/");
-      href.pop();
-      if ($(this.submitButton).val() === "Add Details - TABLES") {
-        href.push("old.html");
-      } else {
-        href.push("new.html");
+      if(FamilyMembers.length >= 3){
+        if ($(this.submitButton).val() === "Add Details - TABLES") {
+          document.location.href = "old.html"
+        } else {
+          document.location.href = "new.html"
+        }
+      }else{
+        alert("Please enter all members of the family")
       }
-      document.location.href = href.join("/") + "?data=" + encodedData;
     }
-  });
-  const YourFamily = $("#YourFamily");
-  const YourFamilyTable = YourFamily.DataTable({
+  })
+  
+  const YourFamilyTable = $("#YourFamily").on("click", ".btn-danger", function () {
+    const rowData = YourFamilyTable.row($(this).parents('tr')).data();
+    FamilyMembers.splice(FamilyMembers.findIndex(x => x.id === rowData.id), 1);
+    localStorage.setItem('FamilyMembers', JSON.stringify(FamilyMembers));
+    YourFamilyTable.clear();
+    YourFamilyTable.rows.add(FamilyMembers);
+    YourFamilyTable.draw();
+  }).on("click", ".btn-primary", function () {
+    const rowData = YourFamilyTable.row($(this).parents('tr')).data();
+    familyModal.data("original", rowData);
+    familyTitle.val(rowData.title);
+    familyForename.val(rowData.forename);
+    familySurname.val(rowData.surname);
+    familyDOB.val(rowData.dob);
+    $("#familyModalPrimary").val("Update Family Member");
+    familyModal.modal("show");
+    FamilyMembers.splice(FamilyMembers.findIndex(x => x.id === rowData.id), 1);
+    localStorage.setItem('FamilyMembers', JSON.stringify(FamilyMembers));
+    YourFamilyTable.clear();
+    YourFamilyTable.rows.add(FamilyMembers);
+    YourFamilyTable.draw();
+  }).DataTable({
     "columns": [
       {
         data: "name",
@@ -126,30 +135,6 @@ $(function () {
       $("#familyModalPrimary").val("Add Family Member");
       familyModal.modal("hide");
     }
-  });
-  YourFamily.on("click", ".btn-danger", function () {
-    const rowData = YourFamilyTable.row($(this).parents('tr')).data();
-    const FamilyMembers = JSON.parse(localStorage.getItem('FamilyMembers'));
-    FamilyMembers.splice(FamilyMembers.findIndex(x => x.id === rowData.id), 1);
-    localStorage.setItem('FamilyMembers', JSON.stringify(FamilyMembers));
-    YourFamilyTable.clear();
-    YourFamilyTable.rows.add(FamilyMembers);
-    YourFamilyTable.draw();
-  }).on("click", ".btn-primary", function () {
-    const rowData = YourFamilyTable.row($(this).parents('tr')).data();
-    familyModal.data("original", rowData);
-    familyTitle.val(rowData.title);
-    familyForename.val(rowData.forename);
-    familySurname.val(rowData.surname);
-    familyDOB.val(rowData.dob);
-    $("#familyModalPrimary").val("Update Family Member");
-    familyModal.modal("show");
-    const FamilyMembers = JSON.parse(localStorage.getItem('FamilyMembers'));
-    FamilyMembers.splice(FamilyMembers.findIndex(x => x.id === rowData.id), 1);
-    localStorage.setItem('FamilyMembers', JSON.stringify(FamilyMembers));
-    YourFamilyTable.clear();
-    YourFamilyTable.rows.add(FamilyMembers);
-    YourFamilyTable.draw();
   });
   familyModal.on("hidden.bs.modal", function () {
     document.getElementById("familyMemberForm").reset();

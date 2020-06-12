@@ -2,7 +2,9 @@ $(function () {
   $("form").submit(function (e) {
     e.preventDefault()
   });
-  data = JSON.parse(window.atob(GetURLParameter("data")));
+  const Family = JSON.parse(localStorage.getItem('FamilyMembers'))
+  Family.push(JSON.parse(localStorage.getItem('Member')))
+  console.log(Family);
   /*
   8888888888
   888
@@ -16,7 +18,7 @@ $(function () {
             Y8b d88P
              "Y88P"
    */
-  $.each(data, function (k, v) {
+  $.each(Family, function (k, v) {
     $("#eyeColourName").append($("<option></option>", {
       "text": v.name + " (" + moment(v.dob).format("DD/MM/YYYY") + ")",
       "value": v.name,
@@ -57,7 +59,7 @@ $(function () {
             v.dob + "" === familyMember.dob + ""
         ) {
           v.eyes = true;
-          v["eye-colour"] = $("#eyeColour").val();
+          v["old-eye-colour"] = $("#eyeColour").val();
           eyeTable.row.add(v).draw();
         }
       });
@@ -72,7 +74,7 @@ $(function () {
     $("#eyeColourName").val("");
     $("#eyeColour").val("").attr("disabled", "disabled");
   });
-  $("#eyeTable").on("click", ".btn-danger", function () {
+  var eyeTable = $("#eyeTable").on("click", ".btn-danger", function () {
     var familyMember = eyeTable.row($(this).parents('tr')).data();
     $("#eyeColourName option").each(function (k, v) {
       var optionData = $(v).data();
@@ -89,8 +91,7 @@ $(function () {
       }
     });
     eyeTable.row($(this).parents('tr')).remove().draw();
-  });
-  $("#eyeTable").on("click", ".btn-primary", function () {
+  }).on("click", ".btn-primary", function () {
     var familyMember = eyeTable.row($(this).parents('tr')).data();
     $("#eyeColourName option").each(function (k, v) {
       var optionData = $(v).data();
@@ -106,49 +107,48 @@ $(function () {
         $(v).removeAttr("disabled");
         $("#eyeModal").modal("show").data("original", familyMember);
         $("#eyeColourName").val(familyMember.name);
-        $("#eyeColour").removeAttr("disabled").val(familyMember["eye-colour"]);
+        $("#eyeColour").removeAttr("disabled").val(familyMember["old-eye-colour"]);
         $("#eyeModalPrimary").val("Update Eye Details");
       }
     });
     eyeTable.row($(this).parents('tr')).remove().draw();
-  });
-  var eyeTable = $("#eyeTable").DataTable({
-    "columns": [
+  }).DataTable({
+    columns: [
       {
-        "data": "name",
-        "title": "Name"
+        data: "name",
+        title: "Name"
       }, {
-        "data": "eye-colour",
-        "title": "Eye Colour"
+        data: "old-eye-colour",
+        title: "Eye Colour"
       }, {
-        "title": "Action",
-        "render": function () {
+        title: "Action",
+        render: function () {
           var buttons = $("<div></div>", {
-            "class": "pull-right btn-group btn-group-sm",
-            "role": "group"
+            class: "pull-right btn-group btn-group-sm",
+            role: "group"
           });
           buttons.append($("<button></button>", {
-            "type": "button",
-            "class": "btn btn-danger",
-            "text": " Remove"
+            type: "button",
+            class: "btn btn-danger",
+            text: " Remove"
           }).prepend($("<i></i>", {
-            "class": "glyphicon glyphicon-remove",
-            "title": "Remove"
+            class: "glyphicon glyphicon-remove",
+            title: "Remove"
           })));
           buttons.append($("<button></button>", {
-            "type": "button",
-            "class": "btn btn-primary",
-            "text": " Edit"
+            type: "button",
+            class: "btn btn-primary",
+            text: " Edit"
           }).prepend($("<i></i>", {
-            "class": "glyphicon glyphicon-edit",
-            "title": "Edit"
+            class: "glyphicon glyphicon-edit",
+            title: "Edit"
           })));
           return buttons.prop("outerHTML");
         },
         "width": "15%",
         "sortable": false
       }
-    ],
+    ]
   });
   $("#eyeModalDismiss").on("click", function () {
     if ($("#eyeModalPrimary").val() === "Update Eye Details") {
