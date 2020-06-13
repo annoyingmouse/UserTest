@@ -36,29 +36,29 @@ $(function () {
   const resetTable = (id) => {
     id && FamilyMembers.splice(FamilyMembers.findIndex(m => m.id === id), 1)
     localStorage.setItem('FamilyMembers', JSON.stringify(FamilyMembers))
-    YourFamilyTable.clear();
-    YourFamilyTable.rows.add(FamilyMembers);
-    YourFamilyTable.draw();
+    YourFamilyTable.clear()
+    YourFamilyTable.rows.add(FamilyMembers)
+    YourFamilyTable.draw()
   }
 
   yourTitle.val(Member.title || null).change(e => {
     Member.title = e.target.value
-    updateMember();
+    updateMember()
   })
 
   yourForename.val(Member.forename || null).change(e => {
     Member.forename = e.target.value
-    updateMember();
+    updateMember()
   })
 
   yourSurname.val(Member.surname || null).change(e => {
     Member.surname = e.target.value
-    updateMember();
+    updateMember()
   })
 
   yourDOB.val(Member.dob || null).change(e => {
     Member.dob = e.target.value
-    updateMember();
+    updateMember()
   })
 
   $("#familyForm").submit(function (e) {
@@ -86,7 +86,7 @@ $(function () {
     familySurname.val(rowData.surname)
     familyDOB.val(rowData.dob)
     familyModalPrimary.val("Update Family Member")
-    familyModal.modal("show");
+    familyModal.modal("show")
     resetTable(rowData.id)
   }).DataTable({
     columns: [
@@ -122,7 +122,8 @@ $(function () {
       }
     ],
     data: FamilyMembers
-  });
+  })
+
   $("#familyMemberForm").validate({
     submitHandler: function () {
       const FamilyMember = familyModal.data("original")
@@ -143,7 +144,7 @@ $(function () {
       familyModalPrimary.val("Add Family Member")
       familyModal.modal("hide")
     }
-  });
+  })
 
   $("#familyModalDismiss").on("click", () => {
     if(familyModal.data("original")){
@@ -156,7 +157,6 @@ $(function () {
   familyModal.on("hidden.bs.modal", function () {
     document.getElementById("familyMemberForm").reset()
     familyModal.removeData("original")
-  });
+  })
 
-
-});
+})
