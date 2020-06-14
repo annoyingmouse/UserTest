@@ -107,6 +107,10 @@ $(function () {
   const eyeModal = $("#eyeModal")
   const eyeModalPrimary = $("#eyeModalPrimary")
   const eyeColour = $("#eyeColour")
+  const eyeColours = ["Brown", "Hazel", "Blue", "Green", "Silver", "Amber"]
+  eyeColours.forEach(val => {
+    eyeColour.append(`<option value="${val}">${val}</option>`)
+  })
 
   YourFamilyDetails.on("click", ".eye-colour", function () {
     const original = YourFamilyDetails.row($(this).parents('tr')).data()
@@ -152,6 +156,10 @@ $(function () {
   const hairModal = $("#hairModal")
   const hairModalPrimary = $("#hairModalPrimary")
   const hairColour = $("#hairColour")
+  const hairColours = ["Black", "Brown", "Blond", "Auburn", "Chestnut", "Red", "Grey", "White"]
+  hairColours.forEach(val => {
+    hairColour.append(`<option value="${val}">${val}</option>`)
+  })
 
   YourFamilyDetails.on("click", ".hair-colour", function () {
     const original = YourFamilyDetails.row($(this).parents('tr')).data()
@@ -197,6 +205,10 @@ $(function () {
   const handModalPrimary = $("#handModalPrimary")
   const handModal = $("#handModal")
   const handedness = $("#handedness")
+  const handednesses = ["Right-handed", "Left-handed", "Mixed-handed", "Ambidextrous", "Ambilevous"]
+  handednesses.forEach(val => {
+    handedness.append(`<option value="${val}">${val}</option>`)
+  })
 
   YourFamilyDetails.on("click", ".handedness", function () {
     const original = YourFamilyDetails.row($(this).parents('tr')).data()

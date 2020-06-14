@@ -10,7 +10,7 @@ $(function () {
   Y88b  d88P 888  888 888  888 888    Y8b.     Y88b 888
    "Y8888P"  888  888 "Y888888 888     "Y8888   "Y88888
   */
-  $("form").submit(function (e) {
+  $("form").submit(e => {
     e.preventDefault()
   })
   const tables = {
@@ -44,7 +44,7 @@ $(function () {
     Family = JSON.parse(localStorage.getItem('FamilyMembers'))
     Family.push(JSON.parse(localStorage.getItem('Member')))
 
-    Object.keys(tables).forEach(function (item) {
+    Object.keys(tables).forEach(item => {
       tables[item]
           .clear()
           .rows
@@ -68,6 +68,10 @@ $(function () {
    */
   const eyeColourName = $("#eyeColourName")
   const eyeColour = $("#eyeColour")
+  const eyeColours = ["Brown", "Hazel", "Blue", "Green", "Silver", "Amber"]
+  eyeColours.forEach(val => {
+    eyeColour.append(`<option value="${val}">${val}</option>`)
+  })
   const eyeModal = $("#eyeModal")
   const eyeModalPrimary = $("#eyeModalPrimary")
 
@@ -77,7 +81,7 @@ $(function () {
         .remove()
         .end()
         .append(`<option value="" disabled selected>Please choose</option>`)
-    $.each(Family, function (k, v) {
+    $.each(Family, (k, v) => {
       const option = $(`<option value="${v.id}">${v.name}</option>`)
       if(v.old.eye){
         option.prop("disabled", true)
@@ -102,7 +106,7 @@ $(function () {
         required: true
       }
     },
-    submitHandler: function () {
+    submitHandler: () => {
       Family.forEach(m => {
         if(m.id === eyeColourName.val()){
           m.old.eye = eyeColour.val()
@@ -114,13 +118,13 @@ $(function () {
     }
   })
 
-  eyeModal.on("hidden.bs.modal", function () {
+  eyeModal.on("hidden.bs.modal", () => {
     resetEyeNameSelect()
     eyeColour.val(null)
     eyeModal.removeData("original")
   })
 
-  tables.eyeTable = $("#eyeTable").on("click", ".btn-danger", function () {
+  tables.eyeTable = $("#eyeTable").on("click", ".btn-danger", function() {
     Family.forEach(m => {
       if(m.id === tables.eyeTable.row($(this).parents('tr')).data().id){
         m.old.eye = null
@@ -128,7 +132,7 @@ $(function () {
     })
     updateAll()
     resetEyeNameSelect()
-  }).on("click", ".btn-primary", function () {
+  }).on("click", ".btn-primary", function() {
     const familyMember = tables.eyeTable.row($(this).parents('tr')).data()
     const clone = JSON.parse(JSON.stringify(familyMember))
     eyeColourName
@@ -169,7 +173,7 @@ $(function () {
     data: Family.filter(m => m.old.eye)
   })
 
-  $("#eyeModalDismiss").on("click", function () {
+  $("#eyeModalDismiss").on("click", () => {
     if (eyeModal.data("original")) {
       const familyMember = eyeModal.data("original")
       Family.forEach(m => {
@@ -180,6 +184,7 @@ $(function () {
       updateAll()
     }
   })
+
   /*
   888    888          d8b
   888    888          Y8P
@@ -192,6 +197,10 @@ $(function () {
    */
   const hairColourName = $("#hairColourName")
   const hairColour = $("#hairColour")
+  const hairColours = ["Black", "Brown", "Blond", "Auburn", "Chestnut", "Red", "Grey", "White"]
+  hairColours.forEach(val => {
+    hairColour.append(`<option value="${val}">${val}</option>`)
+  })
   const hairModal = $("#hairModal")
   const hairModalPrimary = $("#hairModalPrimary")
 
@@ -201,7 +210,7 @@ $(function () {
         .remove()
         .end()
         .append(`<option value="" disabled selected>Please choose</option>`)
-    $.each(Family, function (k, v) {
+    $.each(Family, (k, v) => {
       const option = $(`<option value="${v.id}">${v.name}</option>`)
       if(v.old.hair){
         option.prop("disabled", true)
@@ -226,7 +235,7 @@ $(function () {
         required: true
       }
     },
-    submitHandler: function () {
+    submitHandler: () => {
       Family.forEach(m => {
         if(m.id === hairColourName.val()){
           m.old.hair = hairColour.val()
@@ -238,13 +247,13 @@ $(function () {
     }
   })
 
-  hairModal.on("hidden.bs.modal", function () {
+  hairModal.on("hidden.bs.modal", () => {
     resetHairNameSelect()
     hairColour.val(null)
     hairModal.removeData("original")
   })
 
-  tables.hairTable = $("#hairTable").on("click", ".btn-danger", function () {
+  tables.hairTable = $("#hairTable").on("click", ".btn-danger", function() {
     Family.forEach(m => {
       if(m.id === tables.hairTable.row($(this).parents('tr')).data().id){
         m.old.hair = null
@@ -315,6 +324,10 @@ $(function () {
   */
   const handednessName = $("#handednessName")
   const handedness = $("#handedness")
+  const handednesses = ["Right-handed", "Left-handed", "Mixed-handed", "Ambidextrous", "Ambilevous"]
+  handednesses.forEach(val => {
+    handedness.append(`<option value="${val}">${val}</option>`)
+  })
   const handModal = $("#handModal")
   const handModalPrimary = $("#handModalPrimary")
 
@@ -336,7 +349,7 @@ $(function () {
   }
   resetHandNameSelect()
 
-  handednessName.on("change", function () {
+  handednessName.on("change", function() {
     handedness.prop("disabled", !$(this).val())
   })
 
@@ -349,7 +362,7 @@ $(function () {
         required: true
       }
     },
-    submitHandler: function () {
+    submitHandler: () => {
       Family.forEach(m => {
         if(m.id === handednessName.val()){
           m.old.hand = handedness.val()
@@ -361,13 +374,13 @@ $(function () {
     }
   })
 
-  handModal.on("hidden.bs.modal", function () {
+  handModal.on("hidden.bs.modal", () => {
     resetHandNameSelect()
     handedness.val(null)
     handModal.removeData("original")
   })
 
-  tables.handTable = $("#handTable").on("click", ".btn-danger", function () {
+  tables.handTable = $("#handTable").on("click", ".btn-danger", function() {
     Family.forEach(m => {
       if(m.id === tables.handTable.row($(this).parents('tr')).data().id){
         m.old.hand = null
@@ -375,7 +388,7 @@ $(function () {
     })
     updateAll()
     resetHandNameSelect()
-  }).on("click", ".btn-primary", function () {
+  }).on("click", ".btn-primary", function() {
     const familyMember = tables.handTable.row($(this).parents('tr')).data()
     const clone = JSON.parse(JSON.stringify(familyMember))
     handednessName.find("option").each(function(_, opt){
@@ -414,7 +427,7 @@ $(function () {
     data: Family.filter(m => m.old.hand)
   })
 
-  $("#handModalDismiss").on("click", function () {
+  $("#handModalDismiss").on("click", () => {
     if (handModal.data("original")) {
       const familyMember = handModal.data("original")
       Family.forEach(m => {

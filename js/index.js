@@ -32,6 +32,12 @@ $(function () {
     formatJson()
   }
 
+  ["Dr.", "Mr.", "Mrs.", "Miss.", "Ms."].forEach(val => {
+    yourTitle.append(`<option value="${val}">${val}</option>`)
+    familyTitle.append(`<option value="${val}">${val}</option>`)
+  })
+
+
   const resetTable = (id) => {
     id && FamilyMembers.splice(FamilyMembers.findIndex(m => m.id === id), 1)
     localStorage.setItem('FamilyMembers', JSON.stringify(FamilyMembers))
