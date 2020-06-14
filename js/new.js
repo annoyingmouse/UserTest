@@ -1,93 +1,96 @@
 $(function () {
-  includeHTML();
   $("form").submit(function (e) {
     e.preventDefault()
-  });
-  data = JSON.parse(window.atob(GetURLParameter("data")));
+  })
+
+  const Family = JSON.parse(localStorage.getItem('FamilyMembers'))
+  Family.push(JSON.parse(localStorage.getItem('Member')))
+
+  const memberName = $(".memberName")
+
+  const updateAll = () => {
+    localStorage.setItem('Member', JSON.stringify(...Family.filter(m => m.type === "Member")))
+    localStorage.setItem('FamilyMembers', JSON.stringify(Family.filter(m => m.type === "FamilyMember")))
+    YourFamilyDetails
+        .clear()
+        .rows
+        .add(Family)
+        .draw()
+  }
+
   const YourFamilyDetails = $("#YourFamilyDetails").DataTable({
-    "columns": [{
-      "title": "Family Member",
-      "render": function (data, type, row, meta) {
-        return row.name + " (" + moment(row.dob).format("DD/MM/YYYY") + ")";
-      }
+    columns: [{
+      title: "Family Member",
+      render: (data, type, row) => row.name + " (" + moment(row.dob).format("DD/MM/YYYY") + ")"
     }, {
-      "title": "Eye Colour",
-      "width": "20%",
-      "render": function (data, type, row, meta) {
-        var button = null;
-        if (row.hasOwnProperty("eyes") && row.eyes) {
-          button = $("<button></button>", {
-            "class": "btn btn-default eye-colour btn-sm",
-            "text": row["eye-colour"] + " | Edit",
-            "data-toggle": "modal",
-            "data-target": "#eyeModal",
-            "data-backdrop": "static"
-          }).prop("outerHTML");
-        } else {
-          button = $("<button></button>", {
-            "class": "btn btn-primary eye-colour btn-sm",
-            "text": "Add Eye Colour",
-            "data-toggle": "modal",
-            "data-target": "#eyeModal",
-            "data-backdrop": "static"
-          }).prop("outerHTML");
-        }
-        return button;
-      },
-      "orderable": false
+      title: "Eye Colour",
+      width: "20%",
+      className: "text-center",
+      render: (data, type, row) => row.new.eye
+          ? `
+            <button class="btn btn-default eye-colour" 
+                    data-toggle="modal" 
+                    data-target="#eyeModal" 
+                    data-backdrop="static">
+              ${row.new.eye} | Edit
+            </button>
+          ` : `
+            <button class="btn btn-primary eye-colour pl-3 pr-3" 
+                    data-toggle="modal" 
+                    data-target="#eyeModal" 
+                    data-backdrop="static">
+              Add Eye Colour
+            </button>
+          `
+      ,
+      orderable: false
     }, {
-      "title": "Hair Colour",
-      "width": "20%",
-      "render": function (data, type, row, meta) {
-        var button = null;
-        if (row.hasOwnProperty("hair") && row.hair) {
-          button = $("<button></button>", {
-            "class": "btn btn-default hair-colour btn-sm",
-            "text": row["hair-colour"] + " | Edit",
-            "data-toggle": "modal",
-            "data-target": "#hairModal",
-            "data-backdrop": "static"
-          }).prop("outerHTML");
-        } else {
-          button = $("<button></button>", {
-            "class": "btn btn-primary hair-colour btn-sm",
-            "text": "Add Hair Colour",
-            "data-toggle": "modal",
-            "data-target": "#hairModal",
-            "data-backdrop": "static"
-          }).prop("outerHTML");
-        }
-        return button;
-      },
-      "orderable": false
+      title: "Hair Colour",
+      width: "20%",
+      className: "text-center",
+      render: (data, type, row, meta) => row.new.hair
+          ? `
+            <button class="btn btn-default hair-colour" 
+                    data-toggle="modal" 
+                    data-target="#hairModal" 
+                    data-backdrop="static">
+              ${row.new.hair} | Edit
+            </button>
+          ` : `
+            <button class="btn btn-primary hair-colour pl-3 pr-3" 
+                    data-toggle="modal" 
+                    data-target="#hairModal" 
+                    data-backdrop="static">
+              Add Hair Colour
+            </button>
+          `
+      ,
+      orderable: false
     }, {
-      "title": "Hand Dominance",
-      "width": "25%",
-      "render": function (data, type, row, meta) {
-        var button = null;
-        if (row.hasOwnProperty("hand")) {
-          button = $("<button></button>", {
-            "class": "btn btn-default handedness btn-sm",
-            "text": row.hand + " | Edit",
-            "data-toggle": "modal",
-            "data-target": "#handModal",
-            "data-backdrop": "static"
-          }).prop("outerHTML");
-        } else {
-          button = $("<button></button>", {
-            "class": "btn btn-primary handedness btn-sm",
-            "text": "Add Handedness",
-            "data-toggle": "modal",
-            "data-target": "#handModal",
-            "data-backdrop": "static"
-          }).prop("outerHTML");
-        }
-        return button;
-      },
-      "orderable": false
+      title: "Hand Dominance",
+      width: "25%",
+      className: "text-center",
+      render: (data, type, row, meta) => row.new.hand
+          ? `
+            <button class="btn btn-default handedness" 
+                    data-toggle="modal" 
+                    data-target="#handModal" 
+                    data-backdrop="static">
+              ${row.new.hand} | Edit
+            </button>
+          ` : `
+            <button class="btn btn-primary handedness pl-3 pr-3" 
+                    data-toggle="modal" 
+                    data-target="#handModal" 
+                    data-backdrop="static">
+              Add Handedness
+            </button>
+          `
+      ,
+      orderable: false
     }],
-    "data": data,
-  });
+    data: Family
+  })
   /*
   8888888888
   888
@@ -101,63 +104,41 @@ $(function () {
             Y8b d88P
              "Y88P"
    */
+  const eyeModal = $("#eyeModal")
+  const eyeModalPrimary = $("#eyeModalPrimary")
+  const eyeColour = $("#eyeColour")
+
   YourFamilyDetails.on("click", ".eye-colour", function () {
-    var original = YourFamilyDetails.row($(this).parents('tr')).data();
-    $(".memberName").text(original.name);
-    $("#eyeModal").data("original", original);
-    if (original.hasOwnProperty("eyes") && original.eyes) {
-      $("#eyeExists").prop("checked", true);
-      $("#eyeColour").val(original["eye-colour"]).removeAttr("disabled");
-      $("#eyeModalPrimary").val("Update Eye Details")
+    const original = YourFamilyDetails.row($(this).parents('tr')).data()
+    memberName.text(original.name)
+    eyeModal.data("original", original)
+    if (original.new.eye) {
+      eyeColour
+          .val(original.new.eye)
+      eyeModalPrimary.val("Update Eye Details")
     } else {
-      $("#eyeModalPrimary").val("Add Eye Details")
+      eyeModalPrimary.val("Add Eye Details")
     }
-  });
-  $("#eyeExists").click(function () {
-    if ($(this).prop("checked")) {
-      $("#eyeColour").removeAttr("disabled");
-    } else {
-      $("#eyeColour").attr("disabled", "disabled").val("");
-    }
-  });
-  var eyeForm = $("#eyeForm").validate({
-    "rules": {
-      "eyeColour": {
-        "required": "#eyeExists:checked"
+  })
+
+  eyeModalPrimary.on("click", function (e) {
+    e.preventDefault()
+    const familyMember = eyeModal.data("original")
+    Family.forEach(m => {
+      if(m.id === familyMember.id){
+        m.new.eye = eyeColour.val() ? eyeColour.val() : null
       }
-    },
-    "submitHandler": function (form) {
-      var familyMember = $("#eyeModal").data("original");
-      $.each(data, function (k, v) {
-        if (
-            v.title === familyMember.title
-            &&
-            v.forename === familyMember.forename
-            &&
-            v.surname === familyMember.surname
-            &&
-            v.dob === familyMember.dob
-        ) {
-          if ($("#eyeExists").prop("checked")) {
-            v.eyes = true;
-            v["eye-colour"] = $("#eyeColour").val();
-          } else {
-            delete v.eyes;
-            delete v["eye-colour"];
-          }
-        }
-      });
-      YourFamilyDetails.clear().rows.add(data).draw();
-      $("#eyeModal").modal("hide");
-    }
-  });
-  $("#eyeModal").on("hidden.bs.modal", function () {
-    eyeForm.resetForm();
-    document.getElementById("eyeForm").reset();
-    $("#eyeModal").data("original", "");
-    $(".memberName").text("");
-    $("#eyeColour").attr("disabled", "disabled");
-  });
+    })
+    eyeModal.modal("hide")
+    updateAll()
+  })
+
+  eyeModal.on("hidden.bs.modal", function () {
+    document.getElementById("eyeForm").reset()
+    eyeModal.removeData("original")
+    memberName.text("")
+  })
+
   /*
   888    888          d8b
   888    888          Y8P
@@ -168,63 +149,40 @@ $(function () {
   888    888 888  888 888 888
   888    888 "Y888888 888 888
    */
+  const hairModal = $("#hairModal")
+  const hairModalPrimary = $("#hairModalPrimary")
+  const hairColour = $("#hairColour")
+
   YourFamilyDetails.on("click", ".hair-colour", function () {
-    var original = YourFamilyDetails.row($(this).parents('tr')).data();
-    $(".memberName").text(original.name);
-    $("#hairModal").data("original", original);
-    if (original.hasOwnProperty("hair") && original.hair) {
-      $("#hairExists").prop("checked", true);
-      $("#hairColour").val(original["hair-colour"]).removeAttr("disabled");
-      $("#hairModalPrimary").val("Update Hair Details");
+    const original = YourFamilyDetails.row($(this).parents('tr')).data()
+    memberName.text(original.name)
+    hairModal.data("original", original)
+    if (original.new.hair) {
+      hairColour.val(original.new.hair)
+      hairModalPrimary.val("Update hair Details")
     } else {
-      $("#hairModalPrimary").val("Add Hair Details")
+      hairModalPrimary.val("Add hair Details")
     }
-  });
-  $("#hairExists").click(function () {
-    if ($(this).prop("checked")) {
-      $("#hairColour").removeAttr("disabled");
-    } else {
-      $("#hairColour").attr("disabled", "disabled").val("");
-    }
-  });
-  var hairForm = $("#hairForm").validate({
-    "rules": {
-      "hairColour": {
-        "required": "#hairExists:checked"
+  })
+
+  hairModalPrimary.on("click", function (e) {
+    e.preventDefault()
+    const familyMember = hairModal.data("original")
+    Family.forEach(m => {
+      if(m.id === familyMember.id){
+        m.new.hair = hairColour.val() ? hairColour.val() : null
       }
-    },
-    "submitHandler": function (form) {
-      var familyMember = $("#hairModal").data("original");
-      $.each(data, function (k, v) {
-        if (
-            v.title === familyMember.title
-            &&
-            v.forename === familyMember.forename
-            &&
-            v.surname === familyMember.surname
-            &&
-            v.dob === familyMember.dob
-        ) {
-          if ($("#hairExists").prop("checked")) {
-            v.hair = true;
-            v["hair-colour"] = $("#hairColour").val();
-          } else {
-            delete v.hair;
-            delete v["hair-colour"];
-          }
-        }
-      });
-      YourFamilyDetails.clear().rows.add(data).draw();
-      $("#hairModal").modal("hide");
-    }
-  });
-  $("#hairModal").on("hidden.bs.modal", function () {
-    hairForm.resetForm();
-    document.getElementById("hairForm").reset();
-    $("#hairModal").data("original", "");
-    $(".memberName").text("");
-    $("#hairColour").attr("disabled", "disabled");
-  });
+    })
+    hairModal.modal("hide")
+    updateAll()
+  })
+
+  hairModal.on("hidden.bs.modal", function () {
+    document.getElementById("hairForm").reset()
+    hairModal.removeData("original")
+    memberName.text("")
+  })
+
   /*
   888    888                        888
   888    888                        888
@@ -235,43 +193,38 @@ $(function () {
   888    888 888  888 888  888 Y88b 888
   888    888 "Y888888 888  888  "Y88888
    */
+
+  const handModalPrimary = $("#handModalPrimary")
+  const handModal = $("#handModal")
+  const handedness = $("#handedness")
+
   YourFamilyDetails.on("click", ".handedness", function () {
-    var original = YourFamilyDetails.row($(this).parents('tr')).data();
-    $(".memberName").text(original.name);
-    $("#handModal").data("original", original);
-    if (original.hasOwnProperty("hand")) {
-      $("#handedness").val(original.hand);
-      $("#handModalPrimary").val("Update Handedness");
+    const original = YourFamilyDetails.row($(this).parents('tr')).data()
+    memberName.text(original.name)
+    handModal.data("original", original)
+    if (original.new.hand) {
+      handedness.val(original.new.hand)
+      handModalPrimary.val("Update Handedness")
     } else {
-      $("#handModalPrimary").val("Add Handedness")
+      handModalPrimary.val("Add Handedness")
     }
-  });
-  $("#handModalPrimary").on("click", function (e) {
-    e.preventDefault();
-    var familyMember = $("#handModal").data("original");
-    $.each(data, function (k, v) {
-      if (
-          v.title === familyMember.title
-          &&
-          v.forename === familyMember.forename
-          &&
-          v.surname === familyMember.surname
-          &&
-          v.dob === familyMember.dob
-      ) {
-        if (~~$("#handedness").val().length) {
-          v.hand = $("#handedness").val();
-        } else {
-          delete v.hand;
-        }
+  })
+
+  handModalPrimary.on("click", function (e) {
+    e.preventDefault()
+    const familyMember = handModal.data("original")
+    Family.forEach(m => {
+      if(m.id === familyMember.id){
+        m.new.hand = handedness.val() ? handedness.val() : null
       }
-    });
-    YourFamilyDetails.clear().rows.add(data).draw();
-    $("#handModal").modal("hide");
-    $("#handedness").val("");
-  });
-  $("#handModal").on("hidden.bs.modal", function () {
-    $("#handModal").data("original", "");
-    $(".memberName").text("");
-  });
-});
+    })
+    handModal.modal("hide")
+    updateAll()
+  })
+
+  handModal.on("hidden.bs.modal", () => {
+    handModal.removeData("original")
+    $("#handedness").val(null)
+    memberName.text("")
+  })
+})

@@ -1,7 +1,5 @@
 $(function () {
 
-  includeHTML()
-
   const yourTitle = $("#yourTitle")
   const yourForename = $("#yourForename")
   const yourSurname = $("#yourSurname")
@@ -31,6 +29,7 @@ $(function () {
   const updateMember = () => {
     Member.name = `${Member.title} ${Member.forename} ${Member.surname}`
     localStorage.setItem('Member', JSON.stringify(Member))
+    formatJson()
   }
 
   const resetTable = (id) => {
@@ -101,6 +100,7 @@ $(function () {
       }, {
         title: "Action",
         width: "20%",
+        className: "text-center",
         render: () => `
           <div class="pull-right btn-group btn-group-sm"
                role="group">
@@ -157,6 +157,17 @@ $(function () {
   familyModal.on("hidden.bs.modal", function () {
     document.getElementById("familyMemberForm").reset()
     familyModal.removeData("original")
+    formatJson()
   })
 
+
+  const formatJson = () => {
+    const element = $("#jsonCfgParams");
+    const Family = JSON.parse(localStorage.getItem('FamilyMembers'))
+    Family.push(JSON.parse(localStorage.getItem('Member')))
+    console.log(Family)
+    element.html(JSON.stringify(Family, undefined, 2));
+  }
+
+  formatJson()
 })

@@ -13,6 +13,11 @@ $(function () {
   $("form").submit(function (e) {
     e.preventDefault()
   })
+  const tables = {
+    eyeTable: null,
+    hairTable: null,
+    handTable: null,
+  }
   let Family = JSON.parse(localStorage.getItem('FamilyMembers'))
   Family.push(JSON.parse(localStorage.getItem('Member')))
   const buttonGroup = `
@@ -39,15 +44,13 @@ $(function () {
     Family = JSON.parse(localStorage.getItem('FamilyMembers'))
     Family.push(JSON.parse(localStorage.getItem('Member')))
 
-    eyeTable.clear()
-    eyeTable.rows.add(Family.filter(m => m.old.eye))
-    eyeTable.draw()
-    hairTable.clear()
-    hairTable.rows.add(Family.filter(m => m.old.hair))
-    hairTable.draw()
-    handTable.clear()
-    handTable.rows.add(Family.filter(m => m.old.hand))
-    handTable.draw()
+    Object.keys(tables).forEach(function (item) {
+      tables[item]
+          .clear()
+          .rows
+          .add(Family.filter(m => m.old[$(`#${item}`).data("attribute")]))
+          .draw()
+    });
   }
 
   /*
@@ -117,16 +120,16 @@ $(function () {
     eyeModal.removeData("original")
   })
 
-  const eyeTable = $("#eyeTable").on("click", ".btn-danger", function () {
+  tables.eyeTable = $("#eyeTable").on("click", ".btn-danger", function () {
     Family.forEach(m => {
-      if(m.id === eyeTable.row($(this).parents('tr')).data().id){
+      if(m.id === tables.eyeTable.row($(this).parents('tr')).data().id){
         m.old.eye = null
       }
     })
     updateAll()
     resetEyeNameSelect()
   }).on("click", ".btn-primary", function () {
-    const familyMember = eyeTable.row($(this).parents('tr')).data()
+    const familyMember = tables.eyeTable.row($(this).parents('tr')).data()
     const clone = JSON.parse(JSON.stringify(familyMember))
     eyeColourName
         .find("option")
@@ -157,9 +160,10 @@ $(function () {
         title: "Eye Colour"
       }, {
         title: "Action",
+        className: "text-center",
         render: () => buttonGroup,
-        "width": "20%",
-        "sortable": false
+        width: "20%",
+        sortable: false
       }
     ],
     data: Family.filter(m => m.old.eye)
@@ -240,16 +244,16 @@ $(function () {
     hairModal.removeData("original")
   })
 
-  const hairTable = $("#hairTable").on("click", ".btn-danger", function () {
+  tables.hairTable = $("#hairTable").on("click", ".btn-danger", function () {
     Family.forEach(m => {
-      if(m.id === hairTable.row($(this).parents('tr')).data().id){
+      if(m.id === tables.hairTable.row($(this).parents('tr')).data().id){
         m.old.hair = null
       }
     })
     updateAll()
     resetHairNameSelect()
   }).on("click", ".btn-primary", function () {
-    const familyMember = hairTable.row($(this).parents('tr')).data()
+    const familyMember = tables.hairTable.row($(this).parents('tr')).data()
     const clone = JSON.parse(JSON.stringify(familyMember))
     hairColourName.find("option").each(function(_, opt){
       if($(opt).val() === familyMember.id){
@@ -278,9 +282,10 @@ $(function () {
         title: "Hair Colour"
       }, {
         title: "Action",
+        className: "text-center",
         render: () => buttonGroup,
-        "width": "20%",
-        "sortable": false
+        width: "20%",
+        sortable: false
       }
     ],
     data: Family.filter(m => m.old.hair)
@@ -362,16 +367,16 @@ $(function () {
     handModal.removeData("original")
   })
 
-  const handTable = $("#handTable").on("click", ".btn-danger", function () {
+  tables.handTable = $("#handTable").on("click", ".btn-danger", function () {
     Family.forEach(m => {
-      if(m.id === handTable.row($(this).parents('tr')).data().id){
+      if(m.id === tables.handTable.row($(this).parents('tr')).data().id){
         m.old.hand = null
       }
     })
     updateAll()
     resetHandNameSelect()
   }).on("click", ".btn-primary", function () {
-    const familyMember = handTable.row($(this).parents('tr')).data()
+    const familyMember = tables.handTable.row($(this).parents('tr')).data()
     const clone = JSON.parse(JSON.stringify(familyMember))
     handednessName.find("option").each(function(_, opt){
       if($(opt).val() === familyMember.id){
@@ -401,8 +406,9 @@ $(function () {
       }, {
         title: "Action",
         render: () => buttonGroup,
-        "width": "20%",
-        "sortable": false
+        className: "text-center",
+        width: "20%",
+        sortable: false
       }
     ],
     data: Family.filter(m => m.old.hand)

@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>User test</title>
+  <title>
+    User test
+  </title>
   <meta charset="utf-8">
   <meta name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,9 +17,27 @@
         rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/css/dataTables.bootstrap4.css"
         rel="stylesheet">
+  <link href="./style/main.css"
+        rel="stylesheet">
 </head>
 <body>
-<div w3-include-html="templates/header.html"></div>
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark primary-color mb-3">
+  <a class="navbar-brand"
+     href="#">
+    User Test
+  </a>
+  <button class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#basicExampleNav"
+          aria-controls="basicExampleNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse">
+  </div>
+</nav>
 <div class="container">
   <div class="jumbotron pt-4 pb-4 mb-3">
     <h1>
@@ -158,13 +178,25 @@
         <table id="YourFamily"
                class="table table-bordered table-striped table-condensed">
         </table>
-        <button class="mt-2 btn btn-primary btn-lg btn-block"
+        <button class="mt-2 mb-3 btn btn-primary btn-lg btn-block"
                 type="button"
                 data-toggle="modal"
                 data-target="#familyModal"
                 data-backdrop="static">
           Add Family Member
         </button>
+        <div class="card">
+          <div class="card-header">
+            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+              Show data
+            </a>
+          </div>
+          <div class="collapse" id="collapseExample">
+            <div class="card-body">
+              <pre id="jsonCfgParams" class="preJsonTxt"></pre>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="card mb-3">
@@ -299,8 +331,6 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"></script>
 <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/js/mdb.js"></script>
-<script type="text/javascript"
-        src="js/includeHTML.js"></script>
 <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment-with-locales.js"></script>
 <script type="text/javascript"

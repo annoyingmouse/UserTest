@@ -1,7 +1,14 @@
-body {
-  padding-top: 20px;
+.table th, .table td {
+  vertical-align: middle;
 }
-
-.glyphicon {
-  cursor: pointer;
+.preJsonTxt{
+  font-size: 18px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 200%;
+}
+.boxedIn{
+  border: 1px solid black;
+  margin: 20px;
+  padding: 20px;
 }
