@@ -53,6 +53,10 @@ $(function () {
     });
   }
 
+
+
+
+
   /*
   8888888888
   888
@@ -66,12 +70,14 @@ $(function () {
             Y8b d88P
              "Y88P"
    */
+  const eyeStuff = new OldAttribute('eyeColour', 'eye', ["Brown", "Hazel", "Blue", "Green", "Silver", "Amber"], Family)
+  eyeStuff.init()
   const eyeColourName = $("#eyeColourName")
   const eyeColour = $("#eyeColour")
   const eyeColours = ["Brown", "Hazel", "Blue", "Green", "Silver", "Amber"]
-  eyeColours.forEach(val => {
-    eyeColour.append(`<option value="${val}">${val}</option>`)
-  })
+  // eyeColours.forEach(val => {
+  //   eyeColour.append(`<option value="${val}">${val}</option>`)
+  // })
   const eyeModal = $("#eyeModal")
   const eyeModalPrimary = $("#eyeModalPrimary")
 
