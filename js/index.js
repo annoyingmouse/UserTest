@@ -72,8 +72,8 @@ $(function () {
     submitHandler: function () {
       if(FamilyMembers.length >= 3){
         document.location.href = $(this.submitButton).val() === "Add Details - TABLES"
-          ? "old.html"
-          : "new.html"
+          ? "tables.html"
+          : "table.html"
       }else{
         alert("Please enter all members of the family")
       }
