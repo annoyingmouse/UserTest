@@ -1,4 +1,4 @@
-class TablesClass{
+export default class TablesClass{
 
   constructor(attribute, title, values, name, select, modal, form, button, table) {
     this.attribute = attribute

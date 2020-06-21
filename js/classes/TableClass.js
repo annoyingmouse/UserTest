@@ -1,4 +1,4 @@
-class TableClass{
+export default class TableClass{
   constructor(Table, attribute, modal, form, button, select, values) {
     this.Table = Table
     this.attribute = attribute
@@ -26,7 +26,6 @@ class TableClass{
     })
     this.Table.on('click', '.edit', el => {
       const original = this.Table.row($(el.target).parents('tr')).data()
-      console.log(original)
       $('.memberName').text(original.name)
       this.modal.data('original', original)
       if (original.new[this.attribute]) {
@@ -38,9 +37,7 @@ class TableClass{
     })
     this.form.submit(e => {
       e.preventDefault()
-      console.log(this.modal.data())
       const familyMember = this.modal.data('original')
-      console.log(familyMember)
       this.Family.forEach(m => {
         if(m.id === familyMember.id){
           m.new[this.attribute] = this.select.val() ? this.select.val() : null
@@ -50,12 +47,4 @@ class TableClass{
       this.updateAll()
     })
   }
-
-
-
-
-
-
-
-
 }
