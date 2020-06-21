@@ -176,10 +176,6 @@ const Table = {
     `
   },
   after_render: async () => {
-    $('form').submit(function (e) {
-      e.preventDefault()
-    })
-
     const Table = $('#YourFamilyDetails').DataTable({
       columns: [{
         title: 'Family Member',

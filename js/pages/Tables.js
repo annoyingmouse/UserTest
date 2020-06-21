@@ -113,25 +113,25 @@ const Tables = {
         </div>
         ${
         cards.map(card =>
-            /*html*/`
-              <div class="card mb-3">
-                <div class="card-header">
-                  ${card.header}
-                </div>
-                <div class="card-body">
-                  <table id="${card.table}"
-                         class="table table-bordered table-striped table-condensed">
-                  </table>
-                  <button class="mt-2 btn btn-primary btn-lg btn-block"
-                          type="button"
-                          data-toggle="modal"
-                          data-target="#${card.modal}"
-                          data-backdrop="static">
-                    ${card.button}
-                  </button>
-                </div>
-              </div>        
-            `
+          /*html*/`
+            <div class="card mb-3">
+              <div class="card-header">
+                ${card.header}
+              </div>
+              <div class="card-body">
+                <table id="${card.table}"
+                       class="table table-bordered table-striped table-condensed">
+                </table>
+                <button class="mt-2 btn btn-primary btn-lg btn-block"
+                        type="button"
+                        data-toggle="modal"
+                        data-target="#${card.modal}"
+                        data-backdrop="static">
+                  ${card.button}
+                </button>
+              </div>
+            </div>        
+          `
         )
     }
         <div class="card mb-3">
@@ -150,7 +150,7 @@ const Tables = {
       </div>
       ${
         modals.map(modal =>
-            /*html*/`
+          /*html*/`
             <div class="modal fade"
                   id="${modal.modal}" 
                   tabindex="-1"
