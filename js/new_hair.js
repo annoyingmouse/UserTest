@@ -9,33 +9,51 @@
 888    888 "Y888888 888 888     
  */
 $(function () {
-  $("#YourFamilyDetails").on("click", ".hair-colour", function () {
-    var original = YourFamilyDetails.row($(this).parents('tr')).data();
-    $(".memberName").text(original.name);
-    $("#hairModal").data("original", original);
+  $("#YourFamilyDetails")
+      .on("click", ".hair-colour", function () {
+    var original = YourFamilyDetails
+        .row($(this).parents('tr'))
+        .data();
+    $(".memberName")
+        .text(original.name);
+    $("#hairModal")
+        .data("original", original);
     if (original.hasOwnProperty("hair") && original.hair) {
-      $("#hairExists").prop("checked", true);
-      $("#hairColour").val(original["hair-colour"]).removeAttr("disabled");
-      $("#hairModalPrimary").val("Update Hair Details");
+      $("#hairExists")
+          .prop("checked", true);
+      $("#hairColour")
+          .val(original["hair-colour"])
+          .removeAttr("disabled");
+      $("#hairModalPrimary")
+          .val("Update Hair Details");
     } else {
-      $("#hairModalPrimary").val("Add Hair Details")
+      $("#hairModalPrimary")
+          .val("Add Hair Details")
     }
   });
-  $("#hairExists").click(function () {
-    if ($(this).prop("checked")) {
-      $("#hairColour").removeAttr("disabled");
+  $("#hairExists")
+      .click(function () {
+    if ($(this)
+        .prop("checked")
+    ) {
+      $("#hairColour")
+          .removeAttr("disabled");
     } else {
-      $("#hairColour").attr("disabled", "disabled").val("");
+      $("#hairColour")
+          .attr("disabled", "disabled")
+          .val("");
     }
   });
-  var hairForm = $("#hairForm").validate({
+  var hairForm = $("#hairForm")
+      .validate({
     "rules": {
       "hairColour": {
         "required": "#hairExists:checked"
       }
     },
     "submitHandler": function (form) {
-      var familyMember = $("#hairModal").data("original");
+      var familyMember = $("#hairModal")
+          .data("original");
       $.each(data, function (k, v) {
         if (
             v.title === familyMember.title
@@ -46,7 +64,8 @@ $(function () {
             &&
             v.dob === familyMember.dob
         ) {
-          if ($("#hairExists").prop("checked")) {
+          if ($("#hairExists")
+              .prop("checked")) {
             v.hair = true;
             v["hair-colour"] = $("#hairColour").val();
           } else {
@@ -55,15 +74,27 @@ $(function () {
           }
         }
       });
-      YourFamilyDetails.clear().rows.add(data).draw();
-      $("#hairModal").modal("hide");
+      YourFamilyDetails
+          .clear()
+          .rows
+          .add(data)
+          .draw();
+      $("#hairModal")
+          .modal("hide");
     }
   });
-  $("#hairModal").on("hidden.bs.modal", function () {
-    hairForm.resetForm();
-    document.getElementById("hairForm").reset();
-    $("#hairModal").data("original", "");
-    $(".memberName").text("");
-    $("#hairColour").attr("disabled", "disabled");
+  $("#hairModal")
+      .on("hidden.bs.modal", function () {
+    hairForm
+        .resetForm();
+    document
+        .getElementById("hairForm")
+        .reset();
+    $("#hairModal")
+        .data("original", "");
+    $(".memberName")
+        .text("");
+    $("#hairColour")
+        .attr("disabled", "disabled");
   });
 });

@@ -9,20 +9,33 @@
 888    888 "Y888888 888  888  "Y88888 
  */
 $(function () {
-  $("#YourFamilyDetails").on("click", ".handedness", function () {
-    var original = YourFamilyDetails.row($(this).parents('tr')).data();
-    $(".memberName").text(original.name);
-    $("#handModal").data("original", original);
-    if (original.hasOwnProperty("hand")) {
-      $("#handedness").val(original.hand);
-      $("#handModalPrimary").val("Update Handedness");
+  $("#YourFamilyDetails")
+      .on("click", ".handedness", function () {
+    var original = YourFamilyDetails
+        .row($(this).parents('tr'))
+        .data();
+    $(".memberName")
+        .text(original.name);
+    $("#handModal")
+        .data("original", original);
+    if (
+        original
+            .hasOwnProperty("hand")
+    ) {
+      $("#handedness")
+          .val(original.hand);
+      $("#handModalPrimary")
+          .val("Update Handedness");
     } else {
-      $("#handModalPrimary").val("Add Handedness")
+      $("#handModalPrimary")
+          .val("Add Handedness")
     }
   });
-  $("#handModalPrimary").on("click", function (e) {
+  $("#handModalPrimary")
+      .on("click", function (e) {
     e.preventDefault();
-    var familyMember = $("#handModal").data("original");
+    var familyMember = $("#handModal")
+        .data("original");
     $.each(data, function (k, v) {
       if (
           v.title === familyMember.title
@@ -33,19 +46,33 @@ $(function () {
           &&
           v.dob === familyMember.dob
       ) {
-        if (~~$("#handedness").val().length) {
-          v.hand = $("#handedness").val();
+        if (
+            ~~$("#handedness")
+                .val()
+                .length
+        ) {
+          v.hand = $("#handedness")
+              .val();
         } else {
           delete v.hand;
         }
       }
     });
-    YourFamilyDetails.clear().rows.add(data).draw();
-    $("#handModal").modal("hide");
-    $("#handedness").val("");
+    YourFamilyDetails
+        .clear()
+        .rows
+        .add(data)
+        .draw();
+    $("#handModal")
+        .modal("hide");
+    $("#handedness")
+        .val("");
   });
-  $("#handModal").on("hidden.bs.modal", function () {
-    $("#handModal").data("original", "");
-    $(".memberName").text("");
+  $("#handModal")
+      .on("hidden.bs.modal", function () {
+    $("#handModal")
+        .data("original", "");
+    $(".memberName")
+        .text("");
   });
 });

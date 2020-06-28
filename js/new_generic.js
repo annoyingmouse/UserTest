@@ -1,36 +1,61 @@
-var data = null, YourFamilyDetails = null;
+var data = null,
+    YourFamilyDetails = null;
 w3IncludeHTML();
 $(function () {
-  $("form").submit(function (e) {
+  $("form")
+      .submit(function (e) {
     e.preventDefault()
   });
   data = JSON.parse(window.atob(GetURLParameter("data")));
-  YourFamilyDetails = $("#YourFamilyDetails").DataTable({
+  YourFamilyDetails = $("#YourFamilyDetails")
+      .DataTable({
     "columns": [{
       "title": "Family Member",
-      "render": function (data, type, row, meta) {
-        return row.name + " (" + moment(row.dob).format("DD/MM/YYYY") + ")";
+      "render": function (data, type, row) {
+        var str = row.name;
+        str += " (";
+        str += moment(row.dob)
+            .format("DD/MM/YYYY");
+        str += ")";
+        return str;
       }
     }, {
       "title": "Eye Colour",
       "width": "20%",
-      "render": function (data, type, row, meta) {
+      "render": function (data, type, row) {
         var button = null;
-        if (row.hasOwnProperty("eyes") && row.eyes) {
+        if (
+            row
+                .hasOwnProperty("eyes")
+            &&
+            row.eyes
+        ) {
           button = $("<button></button>", {
-            "class": "btn btn-default eye-colour",
-            "text": row["eye-colour"] + " | Edit  Eye Colour",
-            "data-toggle": "modal",
-            "data-target": "#eyeModal",
-            "data-backdrop": "static"
+            "class":
+                "btn btn-default eye-colour",
+            "text":
+                row["eye-colour"]
+                +
+                " | Edit  Eye Colour",
+            "data-toggle":
+                "modal",
+            "data-target":
+                "#eyeModal",
+            "data-backdrop":
+                "static"
           }).prop("outerHTML");
         } else {
           button = $("<button></button>", {
-            "class": "btn btn-primary eye-colour",
-            "text": "Add Eye Colour",
-            "data-toggle": "modal",
-            "data-target": "#eyeModal",
-            "data-backdrop": "static"
+            "class":
+                "btn btn-primary eye-colour",
+            "text":
+                "Add Eye Colour",
+            "data-toggle":
+                "modal",
+            "data-target":
+                "#eyeModal",
+            "data-backdrop":
+                "static"
           }).prop("outerHTML");
         }
         return button;
@@ -39,23 +64,40 @@ $(function () {
     }, {
       "title": "Hair Colour",
       "width": "20%",
-      "render": function (data, type, row, meta) {
+      "render": function (data, type, row) {
         var button = null;
-        if (row.hasOwnProperty("hair") && row.hair) {
+        if (
+            row
+                .hasOwnProperty("hair")
+            &&
+            row.hair
+        ) {
           button = $("<button></button>", {
-            "class": "btn btn-default hair-colour",
-            "text": row["hair-colour"] + " | Edit Hair Colour",
-            "data-toggle": "modal",
-            "data-target": "#hairModal",
-            "data-backdrop": "static"
+            "class":
+                "btn btn-default hair-colour",
+            "text":
+                row["hair-colour"]
+                +
+                " | Edit Hair Colour",
+            "data-toggle":
+                "modal",
+            "data-target":
+                "#hairModal",
+            "data-backdrop":
+                "static"
           }).prop("outerHTML");
         } else {
           button = $("<button></button>", {
-            "class": "btn btn-primary hair-colour",
-            "text": "Add Hair Colour",
-            "data-toggle": "modal",
-            "data-target": "#hairModal",
-            "data-backdrop": "static"
+            "class":
+                "btn btn-primary hair-colour",
+            "text":
+                "Add Hair Colour",
+            "data-toggle":
+                "modal",
+            "data-target":
+                "#hairModal",
+            "data-backdrop":
+                "static"
           }).prop("outerHTML");
         }
         return button;
@@ -64,23 +106,37 @@ $(function () {
     }, {
       "title": "Hand Dominance",
       "width": "25%",
-      "render": function (data, type, row, meta) {
+      "render": function (data, type, row) {
         var button = null;
-        if (row.hasOwnProperty("hand")) {
+        if (
+            row.hasOwnProperty("hand")
+        ) {
           button = $("<button></button>", {
-            "class": "btn btn-default handedness",
-            "text": row.hand + " | Edit Handedness",
-            "data-toggle": "modal",
-            "data-target": "#handModal",
-            "data-backdrop": "static"
+            "class":
+                "btn btn-default handedness",
+            "text":
+                row.hand
+                +
+                " | Edit Handedness",
+            "data-toggle":
+                "modal",
+            "data-target":
+                "#handModal",
+            "data-backdrop":
+                "static"
           }).prop("outerHTML");
         } else {
           button = $("<button></button>", {
-            "class": "btn btn-primary handedness",
-            "text": "Add Handedness",
-            "data-toggle": "modal",
-            "data-target": "#handModal",
-            "data-backdrop": "static"
+            "class":
+                "btn btn-primary handedness",
+            "text":
+                "Add Handedness",
+            "data-toggle":
+                "modal",
+            "data-target":
+                "#handModal",
+            "data-backdrop":
+                "static"
           }).prop("outerHTML");
         }
         return button;
