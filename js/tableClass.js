@@ -7,26 +7,14 @@ class TableClass{
     this.button = button
     this.select = select
     this.values = values
-    this.Family = [...JSON.parse(localStorage.getItem('FamilyMembers')), JSON.parse(localStorage.getItem('Member'))]
-  }
-  updateAll() {
-    localStorage.setItem('Member', JSON.stringify(...this.Family.filter(m => m.type === 'Member')))
-    localStorage.setItem('FamilyMembers', JSON.stringify(this.Family.filter(m => m.type === 'FamilyMember')))
-
-    this.Family = [...JSON.parse(localStorage.getItem('FamilyMembers')), JSON.parse(localStorage.getItem('Member'))]
-    this.Table
-        .clear()
-        .rows
-        .add(this.Family)
-        .draw()
   }
   init(){
     this.values.forEach(val => {
       this.select.append(`<option value="${val}">${val}</option>`)
     })
-    this.Table.on('click', '.edit', el => {
+    this.Table.on('click', `.edit.${this.attribute}`, el => {
+      el.preventDefault();
       const original = this.Table.row($(el.target).parents('tr')).data()
-      console.log(original)
       $('.memberName').text(original.name)
       this.modal.data('original', original)
       if (original.new[this.attribute]) {
@@ -38,24 +26,17 @@ class TableClass{
     })
     this.form.submit(e => {
       e.preventDefault()
-      console.log(this.modal.data())
       const familyMember = this.modal.data('original')
-      console.log(familyMember)
-      this.Family.forEach(m => {
-        if(m.id === familyMember.id){
-          m.new[this.attribute] = this.select.val() ? this.select.val() : null
+      const value = this.select.val()
+      const attribute = this.attribute
+      const Table = this.Table
+      this.Table.rows().every( function(i) {
+        if(this.data().id === familyMember.id){
+          this.data().new[attribute] = value ? value : null
+          Table.row(i).invalidate().draw()
         }
       })
       this.modal.modal('hide')
-      this.updateAll()
     })
   }
-
-
-
-
-
-
-
-
 }

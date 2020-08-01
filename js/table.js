@@ -14,14 +14,14 @@ $(function () {
       className: 'text-center',
       render: (data, type, row) => row.new.eye
           ? `
-            <button class="btn btn-default edit" 
+            <button class="btn btn-default edit eye" 
                     data-toggle="modal" 
                     data-target="#eyeModal" 
                     data-backdrop="static">
               ${row.new.eye} | Edit
             </button>
           ` : `
-            <button class="btn btn-primary edit pl-3 pr-3" 
+            <button class="btn btn-primary pl-3 pr-3 edit eye" 
                     data-toggle="modal" 
                     data-target="#eyeModal" 
                     data-backdrop="static">
@@ -36,14 +36,14 @@ $(function () {
       className: 'text-center',
       render: (data, type, row) => row.new.hair
           ? `
-            <button class="btn btn-default edit" 
+            <button class="btn btn-default edit hair" 
                     data-toggle="modal" 
                     data-target="#hairModal" 
                     data-backdrop="static">
               ${row.new.hair} | Edit
             </button>
           ` : `
-            <button class="btn btn-primary edit pl-3 pr-3" 
+            <button class="btn btn-primary pl-3 pr-3 edit hair" 
                     data-toggle="modal" 
                     data-target="#hairModal" 
                     data-backdrop="static">
@@ -58,14 +58,14 @@ $(function () {
       className: 'text-center',
       render: (data, type, row) => row.new.hand
           ? `
-            <button class="btn btn-default edit" 
+            <button class="btn btn-default edit hand" 
                     data-toggle="modal" 
                     data-target="#handModal" 
                     data-backdrop="static">
               ${row.new.hand} | Edit
             </button>
           ` : `
-            <button class="btn btn-primary edit pl-3 pr-3" 
+            <button class="btn btn-primary pl-3 pr-3 edit hand" 
                     data-toggle="modal" 
                     data-target="#handModal" 
                     data-backdrop="static">
@@ -75,7 +75,17 @@ $(function () {
       ,
       orderable: false
     }],
-    data: [...JSON.parse(localStorage.getItem('FamilyMembers')), JSON.parse(localStorage.getItem('Member'))]
+    data: [
+        ...JSON.parse(localStorage.getItem('FamilyMembers')),
+        JSON.parse(localStorage.getItem('Member'))
+    ],
+    drawCallback: function(){
+      const family = this.api().rows().data().toArray()
+      localStorage.setItem('Member',
+          JSON.stringify(...family.filter(m => m.type === 'Member')))
+      localStorage.setItem('FamilyMembers',
+          JSON.stringify(family.filter(m => m.type === 'FamilyMember')))
+    }
   })
 
   const eye = new TableClass(

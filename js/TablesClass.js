@@ -77,7 +77,7 @@ class TablesClass{
       this.resetAttributeSelect()
     })
 
-    this.table.on('click', '.btn-primary', (el) => {
+    this.table.on('click', `.btn-primary`, (el) => {
       const familyMember = this.DataTable.row($(el.target).parents('tr')).data()
       const clone = JSON.parse(JSON.stringify(familyMember))
       this.name
