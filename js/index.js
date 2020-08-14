@@ -1,4 +1,4 @@
-$(function () {
+$(() => {
 
   const yourTitle = $('#yourTitle')
   const yourForename = $('#yourForename')
@@ -12,8 +12,8 @@ $(function () {
 
   const familyModal = $('#familyModal')
   const familyModalPrimary = $('#familyModalPrimary')
-  
-  const Member = localStorage.Member 
+
+  const Member = localStorage.Member
     ? JSON.parse(localStorage.Member) 
     : {
         type: 'Member',
@@ -36,7 +36,6 @@ $(function () {
     yourTitle.append(`<option value="${val}">${val}</option>`)
     familyTitle.append(`<option value="${val}">${val}</option>`)
   })
-
 
   const resetTable = (id) => {
     id && FamilyMembers.splice(FamilyMembers.findIndex(m => m.id === id), 1)
@@ -129,7 +128,6 @@ $(function () {
     ],
     data: FamilyMembers
   })
-
   $('#familyMemberForm').validate({
     submitHandler: function () {
       const FamilyMember = familyModal.data('original')
@@ -151,28 +149,23 @@ $(function () {
       familyModal.modal('hide')
     }
   })
-
   $('#familyModalDismiss').on('click', () => {
     if(familyModal.data('original')){
       FamilyMembers.push(familyModal.data('original'))
       resetTable()
     }
-
   })
-
   familyModal.on('hidden.bs.modal', function () {
     document.getElementById('familyMemberForm').reset()
     familyModal.removeData('original')
     formatJson()
   })
-
-
   const formatJson = () => {
-    const element = $('#jsonCfgParams');
-    const Family = JSON.parse(localStorage.getItem('FamilyMembers'))
-    Family.push(JSON.parse(localStorage.getItem('Member')))
-    element.html(JSON.stringify(Family, undefined, 2));
+    const element = $('#jsonCfgParams')
+    const Family = JSON.parse(localStorage.getItem('FamilyMembers')) || []
+    const Member = JSON.parse(localStorage.getItem('Member'))
+    Member && Family.push(JSON.parse(localStorage.getItem('Member')))
+    element.html(JSON.stringify(Family, undefined, 2))
   }
-
   formatJson()
 })
