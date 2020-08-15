@@ -2,6 +2,7 @@ class TablesClass{
 
   constructor(attribute, title, values, name, select, modal, form, button, table) {
     this.attribute = attribute
+    this.title = title
     this.values = values
     this.Family = [...JSON.parse(localStorage.getItem('FamilyMembers')), JSON.parse(localStorage.getItem('Member'))]
     this.name = name
@@ -14,7 +15,6 @@ class TablesClass{
   }
 
   updateAll() {
-    console.log("Updating data")
     localStorage.setItem('Member', JSON.stringify(...this.Family.filter(m => m.type === 'Member')))
     localStorage.setItem('FamilyMembers', JSON.stringify(this.Family.filter(m => m.type === 'FamilyMember')))
     this.Family = [...JSON.parse(localStorage.getItem('FamilyMembers')), JSON.parse(localStorage.getItem('Member'))]
