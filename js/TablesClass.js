@@ -25,7 +25,7 @@ class TablesClass extends BaseTable{
       })
       this.modal.modal('hide')
       this.button.val(`Add ${this.attribute} Details`)
-      this.updateAll(tempFamily)
+      this.setFamily(tempFamily)
     })
 
     this.modal.on('hidden.bs.modal', () => {
@@ -43,7 +43,7 @@ class TablesClass extends BaseTable{
             m.old[this.attribute] = familyMember.old[this.attribute]
           }
         })
-        this.updateAll(tempFamily)
+        this.setFamily(tempFamily)
       }
     })
     this.resetAttributeSelect()
@@ -119,7 +119,7 @@ class TablesClass extends BaseTable{
           m.old[this.short] = null
         }
       })
-      this.updateAll(tempFamily)
+      this.setFamily(tempFamily)
     })
 
     this.table.on('click', '.btn-danger', el => {
@@ -129,7 +129,7 @@ class TablesClass extends BaseTable{
           m.old[this.attribute] = null
         }
       })
-      this.updateAll(tempFamily)
+      this.setFamily(tempFamily)
       this.resetAttributeSelect()
     })
 
@@ -175,14 +175,10 @@ class TablesClass extends BaseTable{
     JSON.parse(localStorage.getItem('Member'))
   ]
 
-  updateAll(tempFamily) {
+  setFamily(tempFamily) {
     localStorage.setItem('Member', JSON.stringify(...tempFamily.filter(m => m.type === 'Member')))
     localStorage.setItem('FamilyMembers', JSON.stringify(tempFamily.filter(m => m.type === 'FamilyMember')))
-    this.DataTable
-        .clear()
-        .rows
-        .add(tempFamily.filter(m => m.old[this.attribute]))
-        .draw()
+    this.DataTable.clear().rows.add(tempFamily.filter(m => m.old[this.attribute])).draw()
   }
 
 }
