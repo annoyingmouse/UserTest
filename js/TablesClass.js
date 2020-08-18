@@ -1,29 +1,12 @@
+/*jslint browser: true*/
+/*global  $*/
 class TablesClass extends BaseTable{
 
   constructor(attribute, title, values) {
     super(attribute, title, values)
     this.name = null
-    this.select = null
-    this.modal = null
-    this.form = null
-    this.button = null
     this.table = null
     this.DataTable = null
-  }
-
-  getFamily = () => [
-      ...JSON.parse(localStorage.getItem('FamilyMembers')),
-      JSON.parse(localStorage.getItem('Member'))
-  ]
-
-  updateAll(tempFamily) {
-    localStorage.setItem('Member', JSON.stringify(...tempFamily.filter(m => m.type === 'Member')))
-    localStorage.setItem('FamilyMembers', JSON.stringify(tempFamily.filter(m => m.type === 'FamilyMember')))
-    this.DataTable
-        .clear()
-        .rows
-        .add(tempFamily.filter(m => m.old[this.attribute]))
-        .draw()
   }
 
   init() {
@@ -71,50 +54,13 @@ class TablesClass extends BaseTable{
 
   initTable() {
     const tmpl = $.templates("#attributeTable")
-    const table_data = {
+    const html = tmpl.render({
       attribute: this.attribute,
       header: this.title.toLowerCase()
-    }
-    let html = tmpl.render(table_data)
+    })
     $('#tableHolder').append(html)
-    this.table = $(`#${this.attribute}Table`)
-    const tableData = `old.${this.attribute}`
-    const tempFamily = this.getFamily()
-    
-    this.table.on('click', '.btn-danger', el => {
-      tempFamily.forEach(m => {
-        if(m.id === this.DataTable.row($(el.target).parents('tr')).data().id){
-          m.old[this.attribute] = null
-        }
-      })
-      this.updateAll(tempFamily)
-      this.resetAttributeSelect()
-    })
 
-    this.table.on('click', `.btn-primary`, (el) => {
-      const tempFamily = this.getFamily()
-      const familyMember = this.DataTable.row($(el.target).parents('tr')).data()
-      const clone = JSON.parse(JSON.stringify(familyMember))
-      this.name
-          .find('option')
-          .each(function(_, opt){
-            if($(opt).val() === familyMember.id){
-              $(opt).prop('disabled', false)
-            }else{
-              $(opt).prop('disabled', true)
-            }
-          })
-      this.name.val(familyMember.id)
-      this.select.val(familyMember.old[this.attribute]).prop( 'disabled', false)
-      this.button.val(`Update ${this.attribute} details`)
-      this.modal.modal('show').data('original', clone)
-      tempFamily.forEach(m => {
-        if(m.id === familyMember.id){
-          m.old[this.short] = null
-        }
-      })
-      this.updateAll(tempFamily)
-    })
+    this.table = $(`#${this.attribute}Table`)
 
     this.DataTable = this.table.DataTable({
       columns: [
@@ -122,7 +68,7 @@ class TablesClass extends BaseTable{
           data: 'name',
           title: 'Name'
         }, {
-          data: tableData,
+          data: `old.${this.attribute}`,
           title: this.title
         }, {
           title: 'Action',
@@ -150,6 +96,43 @@ class TablesClass extends BaseTable{
       ],
       data: this.getFamily().filter(m => m.old[this.attribute])
     })
+
+    this.table.on('click', `.btn-primary`, (el) => {
+      const tempFamily = this.getFamily()
+      const familyMember = this.DataTable.row($(el.target).parents('tr')).data()
+      const clone = JSON.parse(JSON.stringify(familyMember))
+      this.name
+          .find('option')
+          .each(function(_, opt){
+            if($(opt).val() === familyMember.id){
+              $(opt).prop('disabled', false)
+            }else{
+              $(opt).prop('disabled', true)
+            }
+          })
+      this.name.val(familyMember.id)
+      this.select.val(familyMember.old[this.attribute]).prop( 'disabled', false)
+      this.button.val(`Update ${this.attribute} details`)
+      this.modal.modal('show').data('original', clone)
+      tempFamily.forEach(m => {
+        if(m.id === familyMember.id){
+          m.old[this.short] = null
+        }
+      })
+      this.updateAll(tempFamily)
+    })
+
+    this.table.on('click', '.btn-danger', el => {
+      const tempFamily = this.getFamily()
+      tempFamily.forEach(m => {
+        if(m.id === this.DataTable.row($(el.target).parents('tr')).data().id){
+          m.old[this.attribute] = null
+        }
+      })
+      this.updateAll(tempFamily)
+      this.resetAttributeSelect()
+    })
+
   }
 
   populateAttributes() {
@@ -185,6 +168,21 @@ class TablesClass extends BaseTable{
     })
     this.select.val(null)
     this.select.prop('disabled', true)
+  }
+
+  getFamily = () => [
+    ...JSON.parse(localStorage.getItem('FamilyMembers')),
+    JSON.parse(localStorage.getItem('Member'))
+  ]
+
+  updateAll(tempFamily) {
+    localStorage.setItem('Member', JSON.stringify(...tempFamily.filter(m => m.type === 'Member')))
+    localStorage.setItem('FamilyMembers', JSON.stringify(tempFamily.filter(m => m.type === 'FamilyMember')))
+    this.DataTable
+        .clear()
+        .rows
+        .add(tempFamily.filter(m => m.old[this.attribute]))
+        .draw()
   }
 
 }

@@ -3,10 +3,6 @@ class TableClass extends BaseTable {
   constructor(attribute, title, values, Table) {
     super(attribute, title, values)
     this.Table = Table
-    this.select = null
-    this.button = null
-    this.form = null
-    this.modal = null
   }
 
   init(){
@@ -59,4 +55,5 @@ class TableClass extends BaseTable {
       this.select.val('')
     }.bind(this))
   }
+
 }
