@@ -2,7 +2,6 @@ $(function () {
   $('form').submit(function (e) {
     e.preventDefault()
   })
-
   const Table = $('#YourFamilyDetails').DataTable({
     columns: [{
       title: 'Family Member',
@@ -87,34 +86,23 @@ $(function () {
           JSON.stringify(family.filter(m => m.type === 'FamilyMember')))
     }
   })
-
   const eye = new TableClass(
-      Table,
-      'eye',
-      $('#eyeModal'),
-      $('#eyeForm'),
-      $('#eyeModalPrimary'),
-      $('#eyeColour'),
-      ['Brown', 'Hazel', 'Blue', 'Green', 'Silver', 'Amber']
+  'eye',
+      'Eye Colour',
+      ['Brown', 'Hazel', 'Blue', 'Green', 'Silver', 'Amber'],
+      Table
   ).init()
-
   const hair = new TableClass(
-      Table,
       'hair',
-      $('#hairModal'),
-      $('#hairForm'),
-      $('#hairModalPrimary'),
-      $('#hairColour'),
-      ['Black', 'Brown', 'Blond', 'Auburn', 'Chestnut', 'Red', 'Grey', 'White']
+      'Hair Colour',
+      ['Black', 'Brown', 'Blond', 'Auburn', 'Chestnut', 'Red', 'Grey', 'White'],
+      Table
   ).init()
-
   const hand = new TableClass(
-      Table,
+
       'hand',
-      $('#handModal'),
-      $('#handForm'),
-      $('#handModalPrimary'),
-      $('#handedness'),
-      ['Right-handed', 'Left-handed', 'Mixed-handed', 'Ambidextrous', 'Ambilevous']
+      'Handedness',
+      ['Right-handed', 'Left-handed', 'Mixed-handed', 'Ambidextrous', 'Ambilevous'],
+      Table
   ).init()
 })

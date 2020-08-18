@@ -1,48 +1,48 @@
-class TablesClass{
+class TablesClass extends BaseTable{
 
-  constructor(attribute, title, values, name, select, modal, form, button, table) {
-    this.attribute = attribute
-    this.title = title
-    this.values = values
-    this.Family = [...JSON.parse(localStorage.getItem('FamilyMembers')), JSON.parse(localStorage.getItem('Member'))]
-    this.name = name
-    this.select = select
-    this.modal = modal
-    this.modalPrimary = button
-    this.form = form
-    this.table = table
+  constructor(attribute, title, values) {
+    super(attribute, title, values)
+    this.name = null
+    this.select = null
+    this.modal = null
+    this.form = null
+    this.button = null
+    this.table = null
     this.DataTable = null
   }
 
-  updateAll() {
-    localStorage.setItem('Member', JSON.stringify(...this.Family.filter(m => m.type === 'Member')))
-    localStorage.setItem('FamilyMembers', JSON.stringify(this.Family.filter(m => m.type === 'FamilyMember')))
-    this.Family = [...JSON.parse(localStorage.getItem('FamilyMembers')), JSON.parse(localStorage.getItem('Member'))]
+  getFamily = () => [
+      ...JSON.parse(localStorage.getItem('FamilyMembers')),
+      JSON.parse(localStorage.getItem('Member'))
+  ]
+
+  updateAll(tempFamily) {
+    localStorage.setItem('Member', JSON.stringify(...tempFamily.filter(m => m.type === 'Member')))
+    localStorage.setItem('FamilyMembers', JSON.stringify(tempFamily.filter(m => m.type === 'FamilyMember')))
     this.DataTable
         .clear()
         .rows
-        .add(this.Family.filter(m => m.old[this.attribute]))
+        .add(tempFamily.filter(m => m.old[this.attribute]))
         .draw()
   }
 
   init() {
-    this.populateAttributes()
     this.initTable()
-
+    this.populateAttributes()
     this.name.on('change', () => {
       this.select.prop('disabled', !$(this.name).val())
     })
-
     this.form.submit(e => {
       e.preventDefault()
-      this.Family.forEach(m => {
+      const tempFamily = this.getFamily()
+      tempFamily.forEach(m => {
         if(m.id === this.name.val()){
           m.old[this.attribute] = this.select.val()
         }
       })
       this.modal.modal('hide')
-      this.modalPrimary.val(`Add ${this.attribute} Details`)
-      this.updateAll()
+      this.button.val(`Add ${this.attribute} Details`)
+      this.updateAll(tempFamily)
     })
 
     this.modal.on('hidden.bs.modal', () => {
@@ -52,33 +52,47 @@ class TablesClass{
     })
 
     $(`#${this.attribute}ModalDismiss`).on('click', () => {
+      const tempFamily = this.getFamily()
       if (this.modal.data('original')) {
         const familyMember = this.modal.data('original')
-        this.Family.forEach(m => {
+        tempFamily.forEach(m => {
           if(m.id === familyMember.id){
             m.old[this.attribute] = familyMember.old[this.attribute]
           }
         })
-        this.updateAll()
+        this.updateAll(tempFamily)
       }
     })
     this.resetAttributeSelect()
+    this.modal.on('hide.bs.modal', function() {
+      this.select.val('')
+    }.bind(this))
   }
 
   initTable() {
+    const tmpl = $.templates("#attributeTable")
+    const table_data = {
+      attribute: this.attribute,
+      header: this.title.toLowerCase()
+    }
+    let html = tmpl.render(table_data)
+    $('#tableHolder').append(html)
+    this.table = $(`#${this.attribute}Table`)
     const tableData = `old.${this.attribute}`
-
+    const tempFamily = this.getFamily()
+    
     this.table.on('click', '.btn-danger', el => {
-      this.Family.forEach(m => {
+      tempFamily.forEach(m => {
         if(m.id === this.DataTable.row($(el.target).parents('tr')).data().id){
           m.old[this.attribute] = null
         }
       })
-      this.updateAll()
+      this.updateAll(tempFamily)
       this.resetAttributeSelect()
     })
 
     this.table.on('click', `.btn-primary`, (el) => {
+      const tempFamily = this.getFamily()
       const familyMember = this.DataTable.row($(el.target).parents('tr')).data()
       const clone = JSON.parse(JSON.stringify(familyMember))
       this.name
@@ -92,14 +106,14 @@ class TablesClass{
           })
       this.name.val(familyMember.id)
       this.select.val(familyMember.old[this.attribute]).prop( 'disabled', false)
-      this.modalPrimary.val(`Update ${this.attribute} details`)
+      this.button.val(`Update ${this.attribute} details`)
       this.modal.modal('show').data('original', clone)
-      this.Family.forEach(m => {
+      tempFamily.forEach(m => {
         if(m.id === familyMember.id){
           m.old[this.short] = null
         }
       })
-      this.updateAll()
+      this.updateAll(tempFamily)
     })
 
     this.DataTable = this.table.DataTable({
@@ -134,11 +148,23 @@ class TablesClass{
           sortable: false
         }
       ],
-      data: this.Family.filter(m => m.old[this.attribute])
+      data: this.getFamily().filter(m => m.old[this.attribute])
     })
   }
 
   populateAttributes() {
+    const tmpl = $.templates("#attributeModal")
+    const modal_data = {
+      attribute: this.attribute,
+      header: this.title.toLowerCase()
+    }
+    const html = tmpl.render(modal_data)
+    $('.container').append(html)
+    this.button = $(`#${this.attribute}ModalPrimary`)
+    this.form = $(`#${this.attribute}Form`)
+    this.modal = $(`#${this.attribute}Modal`)
+    this.select = $(`#${this.attribute}`)
+    this.name = $(`#${this.attribute}Name`)
     this.values.forEach(val => {
       this.select.append(`<option value="${val}">${val}</option>`)
     })
@@ -150,7 +176,7 @@ class TablesClass{
         .remove()
         .end()
         .append(`<option value="" disabled selected>Please choose</option>`)
-    $.each(this.Family, (k, v) => {
+    $.each(this.getFamily(), (k, v) => {
       const option = $(`<option value="${v.id}">${v.name}</option>`)
       if(v.old[this.attribute]){
         option.prop('disabled', true)

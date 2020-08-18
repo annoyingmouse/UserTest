@@ -1,42 +1,43 @@
 $(() => {
-  $('form').submit(e => {
-    e.preventDefault()
-  })
 
   const eye = new TablesClass(
       'eye',
       'Eye Colour',
-      ['Brown', 'Hazel', 'Blue', 'Green', 'Silver', 'Amber'],
-      $('#eyeColourName'),
-      $('#eyeColour'),
-      $('#eyeModal'),
-      $('#eyeForm'),
-      $('#eyeModalPrimary'),
-      $('#eyeTable')
+      [
+        'Brown',
+        'Hazel',
+        'Blue',
+        'Green',
+        'Silver',
+        'Amber'
+      ]
   ).init()
 
   const hair = new TablesClass(
       'hair',
       'Hair Colour',
-      ['Black', 'Brown', 'Blond', 'Auburn', 'Chestnut', 'Red', 'Grey', 'White'],
-      $('#hairColourName'),
-      $('#hairColour'),
-      $('#hairModal'),
-      $('#hairForm'),
-      $('#hairModalPrimary'),
-      $('#hairTable')
+      [
+        'Black',
+        'Brown',
+        'Blond',
+        'Auburn',
+        'Chestnut',
+        'Red',
+        'Grey',
+        'White'
+      ]
   ).init()
 
   const hand = new TablesClass(
       'hand',
       'Handedness',
-      ['Right-handed', 'Left-handed', 'Mixed-handed', 'Ambidextrous', 'Ambilevous'],
-      $('#handednessName'),
-      $('#handedness'),
-      $('#handModal'),
-      $('#handForm'),
-      $('#handModalPrimary'),
-      $('#handTable')
+      [
+        'Right-handed',
+        'Left-handed',
+        'Mixed-handed',
+        'Ambidextrous',
+        'Ambilevous'
+      ]
   ).init()
 
 })

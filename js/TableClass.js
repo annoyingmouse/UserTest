@@ -1,14 +1,31 @@
-class TableClass{
-  constructor(Table, attribute, modal, form, button, select, values) {
+class TableClass extends BaseTable {
+
+  constructor(attribute, title, values, Table) {
+    super(attribute, title, values)
     this.Table = Table
-    this.attribute = attribute
-    this.modal = modal
-    this.form = form
-    this.button = button
-    this.select = select
-    this.values = values
+    this.select = null
+    this.button = null
+    this.form = null
+    this.modal = null
   }
+
   init(){
+    const tmpl = $.templates("#attributeModal")
+    const modal_data = {
+      attribute: this.attribute,
+      title: this.title.toLowerCase(),
+      question: this.attribute === 'eye'
+          ? 'What colour are <span class="memberName"></span> eyes?'
+          : this.attribute === 'hair'
+              ? 'What colour is <span class="memberName"></span> hair?'
+              : 'What handedness is <span class="memberName"></span>?'
+    }
+    const html = tmpl.render(modal_data)
+    $('.container').append(html)
+    this.select = $(`#${this.attribute}`)
+    this.button = $(`#${this.attribute}ModalPrimary`)
+    this.form = $(`#${this.attribute}Form`)
+    this.modal = $(`#${this.attribute}Modal`)
     this.values.forEach(val => {
       this.select.append(`<option value="${val}">${val}</option>`)
     })
@@ -38,5 +55,8 @@ class TableClass{
       })
       this.modal.modal('hide')
     })
+    this.modal.on('hide.bs.modal', function() {
+      this.select.val('')
+    }.bind(this))
   }
 }
