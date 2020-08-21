@@ -1,3 +1,5 @@
+/*jslint browser: true*/
+/*global  $*/
 $(() => {
 
   const eye = new TablesClass(

@@ -1,4 +1,6 @@
-$(function () {
+/*jslint browser: true*/
+/*global  $*/
+$(() => {
   $('form').submit(function (e) {
     e.preventDefault()
   })

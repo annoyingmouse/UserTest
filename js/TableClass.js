@@ -1,8 +1,7 @@
 class TableClass extends BaseTable {
 
   constructor(attribute, title, values, Table) {
-    super(attribute, title, values)
-    this.Table = Table
+    super(attribute, title, values, Table)
   }
 
   init(){
