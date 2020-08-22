@@ -1,5 +1,3 @@
-/*jslint browser: true*/
-/*global  $*/
 class TablesClass extends BaseTable{
 
   constructor(attribute, title, values) {
@@ -110,7 +108,7 @@ class TablesClass extends BaseTable{
       this.modal.modal('show').data('original', clone)
       tempFamily.forEach(m => {
         if(m.id === familyMember.id){
-          m.old[this.short] = null
+          m.old[this.attribute] = null
         }
       })
       this.setFamily(tempFamily)

@@ -1,11 +1,25 @@
 .table th, .table td {
   vertical-align: middle;
 }
-.preJsonTxt{
-  font-size: 18px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  line-height: 200%;
+pre {
+  outline: 1px solid #ccc;
+  padding: 5px;
+  margin: 5px;
+}
+.string {
+  color: green;
+}
+.number {
+  color: darkorange;
+}
+.boolean {
+  color: blue;
+}
+.null {
+  color: magenta;
+}
+.key {
+  color: red;
 }
 .boxedIn{
   border: 1px solid black;

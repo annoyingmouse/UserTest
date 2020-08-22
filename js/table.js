@@ -1,7 +1,5 @@
-/*jslint browser: true*/
-/*global  $*/
 $(() => {
-  $('form').submit(function (e) {
+  $('form').on('submit', function (e) {
     e.preventDefault()
   })
   const Table = $('#YourFamilyDetails').DataTable({
@@ -89,22 +87,21 @@ $(() => {
     }
   })
   const eye = new TableClass(
-  'eye',
-      'Eye Colour',
-      ['Brown', 'Hazel', 'Blue', 'Green', 'Silver', 'Amber'],
-      Table
+    'eye',
+    'Eye Colour',
+    ['Brown', 'Hazel', 'Blue', 'Green', 'Silver', 'Amber'],
+    Table
   ).init()
   const hair = new TableClass(
-      'hair',
-      'Hair Colour',
-      ['Black', 'Brown', 'Blond', 'Auburn', 'Chestnut', 'Red', 'Grey', 'White'],
-      Table
+    'hair',
+    'Hair Colour',
+    ['Black', 'Brown', 'Blond', 'Auburn', 'Chestnut', 'Red', 'Grey', 'White'],
+    Table
   ).init()
   const hand = new TableClass(
-
-      'hand',
-      'Handedness',
-      ['Right-handed', 'Left-handed', 'Mixed-handed', 'Ambidextrous', 'Ambilevous'],
-      Table
+    'hand',
+    'Handedness',
+    ['Right-handed', 'Left-handed', 'Mixed-handed', 'Ambidextrous', 'Ambilevous'],
+    Table
   ).init()
 })

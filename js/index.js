@@ -1,11 +1,23 @@
-/*jslint browser: true*/
-/*global  $*/
 $(() => {
 
-  const yourTitle = $('#yourTitle')
-  const yourForename = $('#yourForename')
-  const yourSurname = $('#yourSurname')
-  const yourDOB = $('#yourDOB')
+  const memberInputs = {
+    yourTitle : {
+      selector: $('#yourTitle'),
+      attribute: 'title'
+    },
+    yourForename : {
+      selector: $('#yourForename'),
+      attribute: 'forename'
+    },
+    yourSurname : {
+      selector: $('#yourSurname'),
+      attribute: 'surname'
+    },
+    yourDOB : {
+      selector: $('#yourDOB'),
+          attribute: 'dob'
+    },
+  }
 
   const familyTitle = $('#familyTitle')
   const familyForename = $('#familyForename')
@@ -35,7 +47,7 @@ $(() => {
   }
 
   ['Dr.', 'Mr.', 'Mrs.', 'Miss.', 'Ms.'].forEach(val => {
-    yourTitle.append(`<option value="${val}">${val}</option>`)
+    memberInputs.yourTitle.selector.append(`<option value="${val}">${val}</option>`)
     familyTitle.append(`<option value="${val}">${val}</option>`)
   })
 
@@ -47,25 +59,14 @@ $(() => {
     YourFamilyTable.draw()
   }
 
-  yourTitle.val(Member.title || null).change(e => {
-    Member.title = e.target.value
-    updateMember()
-  })
 
-  yourForename.val(Member.forename || null).change(e => {
-    Member.forename = e.target.value
-    updateMember()
-  })
-
-  yourSurname.val(Member.surname || null).change(e => {
-    Member.surname = e.target.value
-    updateMember()
-  })
-
-  yourDOB.val(Member.dob || null).change(e => {
-    Member.dob = e.target.value
-    updateMember()
-  })
+  for (const property in memberInputs) {
+    memberInputs[property].selector.val(Member[memberInputs[property].attribute] || null)
+    memberInputs[property].selector.on('change', e => {
+      Member[memberInputs[property].attribute] = e.target.value
+      updateMember()
+    })
+  }
 
   $('#familyForm').submit(function (e) {
     e.preventDefault()
@@ -167,7 +168,27 @@ $(() => {
     const Family = JSON.parse(localStorage.getItem('FamilyMembers')) || []
     const Member = JSON.parse(localStorage.getItem('Member'))
     Member && Family.push(JSON.parse(localStorage.getItem('Member')))
-    element.html(JSON.stringify(Family, undefined, 2))
+    const json = JSON.stringify(Family, undefined, 2)
+    element.html(syntaxHighlight(json))
   }
+  const syntaxHighlight = function(json) {
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+      var cls = 'number';
+      if (/^"/.test(match)) {
+        if (/:$/.test(match)) {
+          cls = 'key';
+        } else {
+          cls = 'string';
+        }
+      } else if (/true|false/.test(match)) {
+        cls = 'boolean';
+      } else if (/null/.test(match)) {
+        cls = 'null';
+      }
+      return '<span class="' + cls + '">' + match + '</span>';
+    });
+  }
+
   formatJson()
 })
