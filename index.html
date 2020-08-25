@@ -9,16 +9,16 @@
         content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible"
         content="ie=edge">
-  <link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-        rel="stylesheet">
+  <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+        rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        rel="stylesheet"/>
   <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg=="
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha512-weZatQD41YXNCVn3Bvl2y1iAZqtH/Y+MlAQUwovog1iwj8cbSEpQMeErMnDp9CBlqIo0oxOcOF8GUEoOZYD4Zg=="
         crossorigin="anonymous" />
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css"
-        integrity="sha512-RO38pBRxYH3SoOprtPTD86JFOclM51/XTIdEPh5j8sj4tp8jmQIx26twG52UaLi//hQldfrh7e51WzP9wuP32Q=="
-        crossorigin="anonymous" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/1.0.0/mdb.min.css"
+        rel="stylesheet"/>
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css"
         integrity="sha512-PT0RvABaDhDQugEbpNMwgYBCnGCiTZMh9yOzUsJHDgl/dMhD9yjHAwoumnUk3JydV3QTcIkNDuN40CJxik5+WQ=="
@@ -27,28 +27,31 @@
         rel="stylesheet">
 </head>
 <body>
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark primary-color mb-3">
-  <a class="navbar-brand"
-     href="#">
-    User Test
-  </a>
-  <button class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#basicExampleNav"
-          aria-controls="basicExampleNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse">
+<nav class="navbar navbar-dark bg-dark sticky-top mb-3">
+  <div class="container">
+    <a class="navbar-brand"
+       href="#">
+      User Test
+    </a>
+    <button class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#basicExampleNav"
+            aria-controls="basicExampleNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse">
+    </div>
   </div>
 </nav>
 <div class="container">
-  <div class="jumbotron pt-4 pb-4 mb-3">
-    <h1>
+  <div class="card border mb-3 mt-6">
+    <h1 class="card-header">
       Thank you for taking part in this test.
     </h1>
+    <div class="card-body">
     <p>
       We're doing some testing on how easy it is for our users to
       input the members of a family, and their details, so we'd be
@@ -80,12 +83,13 @@
       as they both involve pretty much the same work, but we're
       interested in which is the easiest and most pleasant to use.
     </p>
+    </div>
   </div>
   <form id="familyForm">
-    <div class="card mb-3">
-      <div class="card-header">
+    <div class="card border mb-3">
+      <h5 class="card-header">
         About you
-      </div>
+      </h5>
       <div class="card-body">
         <div class="form-group row">
           <label for="yourTitle"
@@ -149,10 +153,10 @@
         </div>
       </div>
     </div>
-    <div class="card mb-3">
-      <div class="card-header">
+    <div class="card border mb-3">
+      <h5 class="card-header">
         About your family
-      </div>
+      </h5>
       <div class="card-body">
         <table id="YourFamily"
                class="table table-bordered table-striped table-condensed">
@@ -164,16 +168,16 @@
                 data-backdrop="static">
           Add Family Member
         </button>
-        <div class="card">
+        <div class="card border">
           <div class="card-header">
-            <a class="btn btn-primary"
-               data-toggle="collapse"
-               href="#collapseExample"
-               role="button"
-               aria-expanded="false"
-               aria-controls="collapseExample">
+            <button class="btn btn-primary"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#collapseExample"
+                    aria-expanded="false"
+                    aria-controls="collapseExample">
               Show data
-            </a>
+            </button>
           </div>
           <div class="collapse"
                id="collapseExample">
@@ -185,7 +189,7 @@
         </div>
       </div>
     </div>
-    <div class="card mb-3">
+    <div class="card border mb-3">
       <div class="card-header">
         There are two buttons below, they both allow you to enter
         further, detailed, information about your family. It'd be
@@ -299,12 +303,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
         integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
         crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha512-M5KW3ztuIICmVIhjSqXe01oV2bpe248gOxqmlcYrEzAvws7Pw3z6BK0iGbrwvdrUQUhi3eXgtxp5I8PDo9YfjQ=="
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+        integrity="sha512-lmArColmgJ0LRo8c6rZwAhB3mVVSFSsrpqOrmtXMgOFYu8VOwdxTliXrHYdsdmututXwD0Xc1GiGvZlHgNAh4g=="
         crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"
-        integrity="sha512-Mug9KHKmroQFMLm93zGrjhibM2z2Obg9l6qFG2qKjXEXkMp/VDkI4uju9m4QKPjWSwQ6O2qzZEnJDEeCw0Blcw=="
-        crossorigin="anonymous"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/1.0.0/mdb.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment-with-locales.min.js"
         integrity="sha512-qSnlnyh7EcD3vTqRoSP4LYsy2yVuqqmnkM9tW4dWo6xvAoxuVXyM36qZK54fyCmHoY1iKi9FJAUZrlPqmGNXFw=="
         crossorigin="anonymous"></script>
@@ -320,7 +324,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.7/jsrender.min.js"
         integrity="sha512-Y6fnBD9Z/4xDuDemzJBaYAQBGD/EOuaonQDW4W3Khf9j6gbvFd+K48MCW9UeMZrs5F/hELIuy7Mjpf/Ss4tRxQ=="
         crossorigin="anonymous"></script>
-
 <script type="text/javascript"
         src="js/index.js"></script>
 </body>

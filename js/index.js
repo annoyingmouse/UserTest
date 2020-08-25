@@ -15,7 +15,7 @@ $(() => {
     },
     yourDOB : {
       selector: $('#yourDOB'),
-          attribute: 'dob'
+      attribute: 'dob'
     },
   }
 
