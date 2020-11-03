@@ -35,12 +35,12 @@ export const store = new Vuex.Store({
   },
   mutations: {
     initialiseStore(state) {
-			if(localStorage.getItem('store')) {
-				this.replaceState(
-					Object.assign(state, JSON.parse(localStorage.getItem('store')))
-				);
-			}
-		},
+      if(localStorage.getItem('store')) {
+        this.replaceState(
+          Object.assign(state, JSON.parse(localStorage.getItem('store')))
+        );
+      }
+    },
     update(state, { 
       attribute, 
       value 
@@ -71,5 +71,5 @@ export const store = new Vuex.Store({
 });
 
 store.subscribe((mutation, state) => {
-	localStorage.setItem('store', JSON.stringify(state));
+  localStorage.setItem('store', JSON.stringify(state));
 })
