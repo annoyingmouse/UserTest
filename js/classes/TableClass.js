@@ -1,4 +1,5 @@
 export default class TableClass{
+
   constructor(Table, attribute, modal, form, button, select, values) {
     this.Table = Table
     this.attribute = attribute
@@ -9,6 +10,7 @@ export default class TableClass{
     this.values = values
     this.Family = [...JSON.parse(localStorage.getItem('FamilyMembers')), JSON.parse(localStorage.getItem('Member'))]
   }
+
   updateAll() {
     localStorage.setItem('Member', JSON.stringify(...this.Family.filter(m => m.type === 'Member')))
     localStorage.setItem('FamilyMembers', JSON.stringify(this.Family.filter(m => m.type === 'FamilyMember')))
@@ -20,10 +22,13 @@ export default class TableClass{
         .add(this.Family)
         .draw()
   }
+
   init(){
+
     this.values.forEach(val => {
       this.select.append(`<option value="${val}">${val}</option>`)
     })
+
     this.Table.on('click', '.edit', el => {
       const original = this.Table.row($(el.target).parents('tr')).data()
       $('.memberName').text(original.name)
@@ -35,8 +40,10 @@ export default class TableClass{
         this.button.val(`Add ${this.attribute} details`)
       }
     })
+
     this.form.submit(e => {
       e.preventDefault()
+      this.Family = [...JSON.parse(localStorage.getItem('FamilyMembers')), JSON.parse(localStorage.getItem('Member'))]
       const familyMember = this.modal.data('original')
       this.Family.forEach(m => {
         if(m.id === familyMember.id){
@@ -47,4 +54,5 @@ export default class TableClass{
       this.updateAll()
     })
   }
+
 }
