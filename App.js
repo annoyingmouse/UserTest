@@ -1,17 +1,14 @@
-import { store } from './store/store.js'
-import { router } from './router/router.js'
+import Vue from 'https://unpkg.com/vue@next';
+// new Vue({
+//
+// });
 
-Vue.config.devtools = true
-
-Vue.use(Vuex)
-Vue.use(VueRouter)
-
-new Vue({
-  el: '#app',
-  vuetify: new Vuetify({}),
-  store,
-  router,
-  beforeCreate() {
-    this.$store.commit('initialiseStore');
+const Counter = {
+  data() {
+    return {
+      counter: 0
+    }
   }
-})
+}
+
+Vue.createApp(Counter).mount('#counter')
