@@ -46,7 +46,6 @@ export const store = new Vuex.Store({
     }
   },
   getters: {
-    currentView: state => state.currentView,
     getMemberByIndex: (state) => (i) => state.family[i]
   }
 });
