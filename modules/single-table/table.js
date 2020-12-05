@@ -1,4 +1,4 @@
-import { ModalSingle } from './modal-single.js';
+import {ModalSingle} from './modal-single.js';
 
 export const SingleTable = Vue.component('single-table', {
   template: `
@@ -82,10 +82,9 @@ export const SingleTable = Vue.component('single-table', {
         </tbody>
       </table>
 		  <hr/>
-			<button class="btn btn-primary btn-lg btn-block"
-              v-on:click="$router.push({name: 'home'})">
-        Go Back
-      </button>
+		  <router-link v-bind:to="{name: 'home'}" 
+		               tag="button"
+		               class="btn btn-primary btn-lg btn-block">Go Back</router-link>
       <modal-single v-if="showModal"
                     v-on:close-modal="closeModal"
                     v-bind:type="modalType"
@@ -103,10 +102,10 @@ export const SingleTable = Vue.component('single-table', {
     capitalise(str) {
       return str.charAt(0).toUpperCase() + str.slice(1)
     },
-    closeModal(){
+    closeModal() {
       this.showModal = false;
     },
-    openModal(attribute, index){
+    openModal(attribute, index) {
       this.modalType = attribute
       this[attribute] = this.family[index].single[attribute];
       this.selectedMember = index;
