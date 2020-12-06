@@ -109,29 +109,32 @@ export const AddMember = Vue.component('add-member', {
       this.$emit('close-modal')
     },
     onSubmit() {
-      const member = {
-        title: this.user.title,
-        forename: this.user.forename,
-        surname: this.user.surname,
-        dob: this.user.dob,
-        multiple: {
-          eye: null,
-          hair: null,
-          hand: null
-        },
-        single: {
-          eye: null,
-          hair: null,
-          hand: null
-        }
-      }
       if (this.member.index === null) {
-        this.$store.commit('addMember', member);
+        this.$store.commit('addMember', {
+          title: this.user.title,
+          forename: this.user.forename,
+          surname: this.user.surname,
+          dob: this.user.dob,
+          multiple: {
+            eye: null,
+            hair: null,
+            hand: null
+          },
+          single: {
+            eye: null,
+            hair: null,
+            hand: null
+          }
+        });
       } else {
         const index = this.user.index;
+        this.member.title = this.user.title
+        this.member.forename = this.user.forename
+        this.member.surname = this.user.surname
+        this.member.dob = this.user.dob
         this.$store.commit('updateMember', {
           index,
-          member
+          member: this.member
         });
       }
       this.closeModal()
