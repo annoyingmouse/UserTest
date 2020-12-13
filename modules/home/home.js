@@ -117,6 +117,11 @@ export const Home = Vue.component('home', {
     }
   },
   computed: Vuex.mapState(['family']),
+  // computed: {
+  //   family() {
+  //     return this.$store.state.family
+  //   }
+  // },
   components: {
     PageHeader
   },
