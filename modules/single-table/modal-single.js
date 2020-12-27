@@ -105,8 +105,7 @@ export const ModalSingle = Vue.component('modal-single', {
     },
     mem: {
       type: Number,
-      required: false,
-      default: -1
+      required: true
     }
   },
   data() {
