@@ -180,10 +180,10 @@ const Home = {
         </div>
       </div>
       <div class="modal fade"
-         id="familyModal"
-         tabindex="-1"
-         role="dialog"
-         aria-labelledby="familyModalLabel">
+           id="familyModal"
+           tabindex="-1"
+           role="dialog"
+           aria-labelledby="familyModalLabel">
         <div class="modal-dialog"
              role="document">
           <div class="modal-content">

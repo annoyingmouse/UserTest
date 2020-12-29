@@ -114,7 +114,7 @@ const Table = {
       </div>
       ${
         modals.map(modal =>
-            /*html*/`
+          /*html*/`
             <div class="modal fade"
                  id="${modal.modal}"
                  tabindex="-1"
